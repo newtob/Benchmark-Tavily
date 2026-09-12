@@ -1,0 +1,31 @@
+# Node / pnpm
+node_modules/
+dist/
+build/
+.next/
+coverage/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+# Logs and local env
+*.log
+.env
+
+# Vercel CLI local state
+.vercel
+
+# OTel captured telemetry (local state, not source)
+otel/output/

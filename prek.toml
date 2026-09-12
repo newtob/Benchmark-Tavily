@@ -1,0 +1,70 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+
+[[repos.hooks]]
+id = "trailing-whitespace"
+
+[[repos.hooks]]
+id = "end-of-file-fixer"
+
+[[repos.hooks]]
+id = "check-yaml"
+# pnpm-lock.yaml uses multi-document YAML that PyYAML's single-doc loader
+# rejects; it's generated and validated by pnpm itself, not this hook.
+exclude = '^pnpm-lock\.yaml$'
+
+[[repos.hooks]]
+id = "check-json"
+
+[[repos.hooks]]
+id = "check-added-large-files"
+
+[[repos.hooks]]
+id = "check-merge-conflict"
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.16.7"
+
+[[repos.hooks]]
+id = "ruff-check"
+args = ["--fix"]
+
+[[repos.hooks]]
+id = "ruff-format"
+
+[[repos]]
+repo = "https://github.com/pre-commit/mirrors-mypy"
+rev = "v2.3.1"
+
+[[repos.hooks]]
+id = "mypy"
+files = '^(otel|tests)/.*\.py$'
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "secret-scan"
+name = "Secret scan"
+entry = "bash ./scripts/hooks/secret-scan.sh"
+language = "system"
+pass_filenames = false
+
+[[repos.hooks]]
+id = "biome-check"
+name = "Biome format & lint"
+entry = "biome check --write"
+language = "node"
+additional_dependencies = ["@biomejs/biome@2.5.13"]
+files = '\.(ts|tsx|js|jsx|mjs|cjs|json|jsonc)$'
+exclude = '^(pnpm-lock\.yaml|.*/dist/.*|.*/build/.*|.*/\.next/.*)$'
+
+[[repos.hooks]]
+id = "ts-typecheck"
+name = "TypeScript typecheck"
+entry = "bash ./scripts/hooks/ts-typecheck.sh"
+language = "system"
+pass_filenames = false
+files = '\.(ts|tsx)$'

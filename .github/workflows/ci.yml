@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality (prek)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.12.13"
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: "12.4.1"
+
+      - name: Install Python dev dependencies
+        run: uv sync --group dev
+
+      - name: Run prek (format, lint, typecheck, secret scan)
+        run: uv run prek run --all-files --config prek.toml
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.12.13"
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: "12.4.1"
+
+      - name: Install Python dependencies
+        run: uv sync --group dev
+
+      - name: Install Node dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Python tests
+        run: uv run pytest
+
+      - name: Run TypeScript tests
+        run: pnpm run test
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/dependency-review-action@v5.0.0
