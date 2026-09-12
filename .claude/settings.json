@@ -1,0 +1,76 @@
+{
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true
+  },
+  "hooks": {
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "prek run $(git diff HEAD --name-only)"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(brew list:*)",
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(grep:*)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(newrelic *)",
+      "Bash(openspec instructions:*)",
+      "Bash(openspec new:*)",
+      "Bash(openspec status:*)",
+      "Bash(pandoc *)",
+      "Bash(shellcheck *)",
+      "Bash(tofu init:*)",
+      "Bash(which *)",
+      "Bash(which gh:*)",
+      "Edit(.claude/*)",
+      "Edit(outputs/*)",
+      "Glob",
+      "Grep",
+      "Read",
+      "Task",
+      "TaskCreate",
+      "TaskGet",
+      "TaskList",
+      "TaskUpdate",
+      "WebFetch",
+      "WebFetch(domain:docs.newrelic.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:registry.terraform.io)",
+      "WebSearch",
+      "Write(.claude/*)",
+      "Write(outputs/*)",
+      "mcp__context7__*",
+      "mcp__context7__query-docs",
+      "mcp__context7__resolve-library-id",
+      "Bash(python3 *)",
+      "mcp__claude_ai_Atlassian__getConfluencePage",
+      "mcp__claude_ai_Atlassian__updateConfluencePage"
+    ],
+    "deny": ["Read(./.env)"]
+  },
+  "statusLine": {
+    "command": "jq -r '\"[\\(.model.display_name)] \\(.context_window.used_percentage // 0)% context\"'",
+    "type": "command"
+  },
+  "teammateMode": "tmux",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317",
+    "OTEL_LOGS_EXPORT_INTERVAL": "5000"
+  }
+}

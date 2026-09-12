@@ -2,72 +2,9 @@ set shell := ["bash", "-uc"]
 
 ## Typical flow: just otel-up → use Claude Code → just otel-parse → just otel-costs → just otel-down.
 
-# List available recipes
+# List all
 default:
     @just --list
-
-# Install both Python and TypeScript toolchains
-[group('all')]
-install: py-sync ts-install
-
-# Run the full local quality gate (same checks as CI's quality job)
-[group('all')]
-check:
-    uv run prek run --all-files --config prek.toml
-
-# Run everything CI runs: quality gate + both test suites
-[group('all')]
-ci: check py-test ts-test
-
-# Sync Python dependencies (uv)
-[group('py')]
-py-sync:
-    uv sync --group dev
-
-# Lint Python source
-[group('py')]
-py-lint:
-    uv run ruff check .
-
-# Format Python source
-[group('py')]
-py-format:
-    uv run ruff format .
-
-# Type-check Python source (mypy, strict)
-[group('py')]
-py-typecheck:
-    uv run mypy otel tests
-
-# Run Python tests (pytest)
-[group('py')]
-py-test:
-    uv run pytest
-
-# Install TypeScript/Node dependencies (pnpm)
-[group('ts')]
-ts-install:
-    pnpm install
-
-# Lint TypeScript/JS source (Biome)
-[group('ts')]
-ts-lint:
-    pnpm run lint
-
-# Format TypeScript/JS source (Biome, writes fixes)
-[group('ts')]
-ts-format:
-    pnpm run format
-
-# Type-check TypeScript source (tsc); skips cleanly if no .ts files exist yet
-[group('ts')]
-ts-typecheck:
-    pnpm run typecheck
-
-# Run TypeScript tests (Vitest)
-[group('ts')]
-ts-test:
-    pnpm run test
 
 # Start the OTel collector (docker compose, detached)
 [group('otel')]
