@@ -1,0 +1,7 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Tavily MCP response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
+  "query": "return the latest release for the package `uv`",
+  "response_text": "Title: Releases · astral-sh/uv\nURL: https://github.com/astral-sh/uv/releases\nContent: The latest release of uv is 0.9.7, published recently. uv is an extremely fast Python package and project manager, written in Rust.\n\nTitle: uv - PyPI\nURL: https://pypi.org/project/uv/\nContent: uv: An extremely fast Python package and project manager, written in Rust. Current version 0.9.7.",
+  "latency_ms": 920.0,
+  "response_bytes": 360
+}

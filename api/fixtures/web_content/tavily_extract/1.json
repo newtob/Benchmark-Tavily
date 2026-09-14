@@ -1,0 +1,7 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Tavily extract response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
+  "url": "https://svelte.dev/docs/kit/adapter-static",
+  "response_text": "# adapter-static\n\n`adapter-static` allows you to prerender your entire SvelteKit app as a collection of static files, rather than dynamically server-rendering it. This is useful for static site hosting where no Node.js (or other) server runtime is available, such as GitHub Pages or a plain static file server behind nginx.\n\nInstall with `npm i -D @sveltejs/adapter-static` and configure it in `svelte.config.js`.",
+  "latency_ms": 590.0,
+  "response_bytes": 420
+}

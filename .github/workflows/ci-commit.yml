@@ -1,12 +1,10 @@
-name: CI
+name: CI Commit
 
 on:
-  pull_request:
   push:
-    branches: [main]
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-commit-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -70,14 +68,3 @@ jobs:
 
       - name: Run TypeScript tests
         run: pnpm run test
-
-  dependency-review:
-    name: Dependency review
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v7.0.1
-      - uses: actions/dependency-review-action@v5.0.0

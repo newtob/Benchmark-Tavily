@@ -40,7 +40,22 @@ rev = "v2.3.1"
 
 [[repos.hooks]]
 id = "mypy"
-files = '^(otel|tests)/.*\.py$'
+files = '^(otel|tests|api|scripts)/.*\.py$'
+# The mypy pre-commit hook runs in its own isolated environment (self-
+# contained, no repo venv needed) — without these, it can't resolve
+# api/'s runtime imports and silently mis-types every FastAPI/pydantic
+# class as `Any` instead of raising a real error, which is worse than
+# not checking at all. Keep in sync with pyproject.toml's dependencies.
+additional_dependencies = [
+    "fastapi==0.141.1",
+    "pydantic==2.13.5",
+    "tavily-python==0.8.2",
+    "httpx==0.28.1",
+    "mcp==2.2.0",
+    "tiktoken==0.14.0",
+    "pyyaml==6.0.3",
+    "types-PyYAML==6.0.12.20260906",
+]
 
 [[repos]]
 repo = "local"

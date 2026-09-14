@@ -7,6 +7,18 @@ totals) plus the repo's tooling scaffold — pre-commit hooks, CI, and
 dependency management for both languages. See `agents.md` for full
 conventions.
 
+## Pricing
+
+Tavily pricing:
+
+- Charges by "credit", e.g 5 web page extractions per credit.
+- Free tier is 1000 credits/month, which allows for 5000 web page extractions.
+- Tavily then charges PaYG (Pay As You Go) at $0.008/credit, so the next 5000 web extractions would be $8 / £6.
+
+Claude pricing:
+
+- Each model's charges per input and output token, with a 90% discount on cache hit's within the default 5 min window.
+
 ## Getting started
 
 ```bash

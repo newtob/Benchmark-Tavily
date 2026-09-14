@@ -14,7 +14,9 @@
       "!**/build",
       "!**/coverage",
       "!**/.next",
-      "!**/node_modules"
+      "!**/.svelte-kit",
+      "!**/node_modules",
+      "!**/*.svelte"
     ]
   },
   "formatter": {
@@ -25,6 +27,11 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   },
   "linter": {

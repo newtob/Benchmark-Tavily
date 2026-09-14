@@ -1,0 +1,7 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Tavily extract response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
+  "url": "https://docs.tavily.com/documentation/api-reference/endpoint/extract",
+  "response_text": "# Tavily Extract\n\n## Parameters\n\n- `urls` (required): list of URLs to extract content from.\n- `extract_depth` (optional): `basic` (default) or `advanced`.\n- `include_images` (optional): include a list of images extracted from the URLs.\n- `format` (optional): return content as `markdown` or `text`.\n- `include_favicon` (optional): include the site favicon in the response.\n\nEach result includes `raw_content`, `url`, and per-source metadata such as title and response time.",
+  "latency_ms": 640.0,
+  "response_bytes": 480
+}

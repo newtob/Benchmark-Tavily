@@ -1,0 +1,17 @@
+# Hand-curated benchmark scenarios for Table 1 (Raw tool call vs MCP).
+# Edit this file to add/remove/adjust what the benchmark measures;
+# recorded response fixtures are generated from it via `just record-fixtures`.
+# See specs/tavily-benchmark-app.md §4.
+tool_call_queries:
+  - query: "return the latest release for the package `uv`"
+    note: >
+      Exercises a real-world "check current package version" lookup — the
+      kind of query a coding agent runs constantly.
+  - query: "what is the current stable version of the Svelte compiler"
+    note: >
+      A second version-lookup query in a different ecosystem, to check the
+      comparison isn't an artifact of one query's specific result shape.
+  - query: "what does the Tavily extract API endpoint return"
+    note: >
+      A documentation-lookup query, structurally different from a version
+      check (longer, more discursive expected results).

@@ -1,6 +1,11 @@
 services:
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
+    # Pinned per this repo's dependency-pinning convention — verified against
+    # https://github.com/open-telemetry/opentelemetry-collector-releases's
+    # latest release tag at implementation time. Bump deliberately, not via
+    # a floating `latest` tag.
+    image: otel/opentelemetry-collector-contrib:0.160.0
+    restart: unless-stopped
     command: ["--config=/etc/otel-collector-config.yaml"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
@@ -8,3 +13,13 @@ services:
     ports:
       - "4317:4317"
       - "4318:4318"
+      - "13133:13133"
+    # The contrib image is a minimal (shell-less) distroless-style image, so
+    # there's no `wget`/`curl`/`sh` to exec a check with from inside the
+    # container — hence `test: ["NONE"]` here. Real readiness is checked from
+    # the host by scripts/hooks/otel-ensure-running.sh, which polls the
+    # health_check extension's HTTP endpoint (port 13133, added below in
+    # otel-collector-config.yaml) directly. This block only documents that
+    # a healthcheck was considered and why it's a host-side concern instead.
+    healthcheck:
+      test: ["NONE"]

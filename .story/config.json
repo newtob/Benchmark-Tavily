@@ -1,0 +1,13 @@
+{
+  "features": {
+    "handovers": true,
+    "issues": true,
+    "reviews": true,
+    "roadmap": true,
+    "tickets": true
+  },
+  "language": "typescript",
+  "project": "Tavily-Benchmark",
+  "type": "webapp",
+  "version": 2
+}

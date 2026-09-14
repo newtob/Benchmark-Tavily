@@ -1,0 +1,7 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Tavily extract response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
+  "url": "https://opentelemetry.io/docs/collector/install/docker/",
+  "response_text": "# Install with Docker\n\nThe OpenTelemetry Collector distributes container images for Docker. Run the collector with:\n\n```\ndocker run -p 4317:4317 -p 4318:4318 \\\n  -v $(pwd)/config.yaml:/etc/otelcol/config.yaml \\\n  otel/opentelemetry-collector\n```\n\nUse the `otel/opentelemetry-collector-contrib` image instead of the core image when you need exporters or receivers only available in the contrib distribution, such as the file exporter.",
+  "latency_ms": 610.0,
+  "response_bytes": 460
+}

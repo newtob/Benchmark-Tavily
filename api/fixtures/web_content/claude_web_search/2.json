@@ -1,0 +1,10 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Claude Code CLI response. Run `just record-fixtures` (needs the Claude Code CLI logged in) to replace with real recorded data.",
+  "question": "How do you run the OpenTelemetry Collector with Docker?",
+  "response_text": "Run `docker run -p 4317:4317 -p 4318:4318 -v $(pwd)/config.yaml:/etc/otelcol/config.yaml otel/opentelemetry-collector`, mounting your collector config into the container. Use the `-contrib` image variant instead of the core one if your pipeline needs a receiver or exporter — such as the file exporter — that ships only in the contrib distribution.",
+  "latency_ms": 4500.0,
+  "response_bytes": 340,
+  "session_id": "placeholder-session-2",
+  "model": "claude-sonnet-5",
+  "total_cost_usd": 0.0163
+}

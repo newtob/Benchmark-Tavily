@@ -1,0 +1,133 @@
+name: CI PR
+
+on:
+  pull_request:
+
+concurrency:
+  group: ci-pr-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality (prek)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.12.13"
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: "12.4.1"
+
+      - name: Install Python dev dependencies
+        run: uv sync --group dev
+
+      - name: Run prek (format, lint, typecheck, secret scan)
+        run: uv run prek run --all-files --config prek.toml
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          version: "0.12.13"
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: "12.4.1"
+
+      - name: Install Python dependencies
+        run: uv sync --group dev
+
+      - name: Install Node dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Python tests
+        run: uv run pytest
+
+      - name: Run TypeScript tests
+        run: pnpm run test
+
+  e2e:
+    name: E2E (Docker + Playwright)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+
+      - uses: pnpm/action-setup@v6.1.0
+        with:
+          version: "12.4.1"
+
+      - name: Install e2e dependencies
+        run: pnpm --dir e2e install --frozen-lockfile
+
+      - name: Install Playwright's chromium
+        run: pnpm --dir e2e exec playwright install --with-deps chromium
+
+      - name: Build the app image
+        run: docker build -t tavily-benchmark:ci .
+
+      - name: Run the app container
+        run: docker run --rm -d --name tavily-benchmark -p 8080:8080 tavily-benchmark:ci
+
+      - name: Wait for the container to become healthy
+        run: |
+          for _ in $(seq 1 30); do
+            curl -sf -o /dev/null http://localhost:8080/api/healthz && exit 0
+            sleep 1
+          done
+          echo "container did not become healthy in time" >&2
+          docker logs tavily-benchmark || true
+          exit 1
+
+      - name: Run Playwright
+        run: pnpm --dir e2e exec playwright test
+
+      - name: Stop the app container
+        if: always()
+        run: docker stop tavily-benchmark || true
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 7
+
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/dependency-review-action@v5.0.0

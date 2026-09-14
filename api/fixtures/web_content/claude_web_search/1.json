@@ -1,0 +1,10 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Claude Code CLI response. Run `just record-fixtures` (needs the Claude Code CLI logged in) to replace with real recorded data.",
+  "question": "What does the SvelteKit adapter-static package do?",
+  "response_text": "`@sveltejs/adapter-static` prerenders a SvelteKit app into plain static HTML/CSS/JS files, so it can be served by any static file host or reverse proxy without a Node.js runtime — a common choice when a separate backend already serves the app's API.",
+  "latency_ms": 3800.0,
+  "response_bytes": 270,
+  "session_id": "placeholder-session-1",
+  "model": "claude-sonnet-5",
+  "total_cost_usd": 0.0121
+}

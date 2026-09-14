@@ -1,0 +1,19 @@
+# Hand-curated benchmark scenarios for Table 2 (Claude Web Search vs Tavily
+# Extract). Edit this file to add/remove/adjust what the benchmark measures;
+# recorded response fixtures are generated from it via `just record-fixtures`.
+# See specs/tavily-benchmark-app.md §4.
+web_content_pairs:
+  - url: "https://docs.tavily.com/documentation/api-reference/endpoint/extract"
+    question: "What parameters does the Tavily Extract API endpoint accept?"
+    note: >
+      A documentation page with a fairly long, structured answer — a good
+      stress test for response-payload size differences between methods.
+  - url: "https://svelte.dev/docs/kit/adapter-static"
+    question: "What does the SvelteKit adapter-static package do?"
+    note: >
+      A shorter, more focused reference page.
+  - url: "https://opentelemetry.io/docs/collector/install/docker/"
+    question: "How do you run the OpenTelemetry Collector with Docker?"
+    note: >
+      A how-to/tutorial-style page, distinct in shape from the two reference
+      pages above.

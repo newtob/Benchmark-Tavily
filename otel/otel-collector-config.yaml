@@ -18,7 +18,12 @@ exporters:
   file/metrics:
     path: /output/otel-metrics.jsonl
 
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
 service:
+  extensions: [health_check]
   pipelines:
     logs:
       receivers: [otlp]

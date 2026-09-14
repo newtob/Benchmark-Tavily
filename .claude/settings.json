@@ -4,6 +4,27 @@
     "code-simplifier@claude-plugins-official": true
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./scripts/hooks/otel-ensure-running.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ./scripts/hooks/log-prompt.sh",
+            "async": true
+          }
+        ]
+      }
+    ],
     "TaskCompleted": [
       {
         "hooks": [

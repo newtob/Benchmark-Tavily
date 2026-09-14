@@ -1,0 +1,10 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Claude Code CLI response. Run `just record-fixtures` (needs the Claude Code CLI logged in) to replace with real recorded data.",
+  "question": "What parameters does the Tavily Extract API endpoint accept?",
+  "response_text": "The Tavily Extract API accepts a required `urls` parameter (a list of URLs to extract content from), plus optional parameters: `extract_depth` (basic or advanced), `include_images`, `format` (markdown or text), and `include_favicon`. Each result in the response includes the extracted `raw_content` along with per-source metadata.",
+  "latency_ms": 4200.0,
+  "response_bytes": 360,
+  "session_id": "placeholder-session-0",
+  "model": "claude-sonnet-5",
+  "total_cost_usd": 0.0154
+}

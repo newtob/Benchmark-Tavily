@@ -1,0 +1,7 @@
+{
+  "_placeholder_note": "Hand-authored placeholder, not a real Tavily response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
+  "query": "what does the Tavily extract API endpoint return",
+  "response_text": "{\"query\": \"what does the Tavily extract API endpoint return\", \"answer\": null, \"results\": [{\"title\": \"Tavily Extract - Tavily Docs\", \"url\": \"https://docs.tavily.com/documentation/api-reference/endpoint/extract\", \"content\": \"The Extract endpoint returns cleaned page content for one or more URLs, including raw_content (markdown or text), optional images, and per-result metadata such as title and response time.\", \"score\": 0.95}], \"images\": [], \"response_time\": 1.05}",
+  "latency_ms": 900.0,
+  "response_bytes": 430
+}
