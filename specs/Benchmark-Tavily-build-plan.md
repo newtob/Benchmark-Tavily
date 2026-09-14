@@ -23,6 +23,11 @@ Write the plan to specs/ first; then implement, looping docker build + playwrigh
 
 The design has been completed in Claude Design: `@.\design_handoff_benchmark_tavily\`
 
+## Documentation search
+
+- Always use Context7 when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
+- add this as a rule file to Claude in the 
+
 ## AgentSoul Memory
 
 Location: `@C:\Users\newt0b\Code\Agent_Context\`
