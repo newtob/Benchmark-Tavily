@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/synechron-presentation-design-system-c8778de1-001a-41c4-8a20-cd618cfc3944/colors_and_type.css">
+  <link rel="stylesheet" href="_ds/synechron-presentation-design-system-c8778de1-001a-41c4-8a20-cd618cfc3944/styles.css">
+  <script src="_ds/synechron-presentation-design-system-c8778de1-001a-41c4-8a20-cd618cfc3944/_ds_bundle.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{-webkit-font-smoothing:antialiased}
+    a{color:var(--syn-blue-light)}
+    a:hover{color:var(--syn-blue)}
+  </style>
+</helmet>
+<div data-theme="{{ theme }}" style="min-height:100vh;background:var(--bg);font-family:var(--font-brand);padding:56px 24px 80px">
+  <div style="max-width:960px;margin:0 auto">
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap">
+      <div style="max-width:640px">
+        <h1 style="margin:0;font-weight:700;font-size:32px;line-height:1.15;color:var(--fg1)">Tavily Benchmark</h1>
+        <p style="margin:10px 0 0;font-weight:400;font-size:14px;line-height:1.6;color:var(--fg3)">Estimates the LLM token cost and price of running each method <strong style="font-weight:700;color:var(--fg1)">1,000 searches</strong> — a single real search's result, averaged and scaled ×1000 for a legible number. See <code style="font-family:var(--font-mono);font-size:13px">specs/tavily-benchmark-app.md</code> for methodology and approximation caveats.</p>
+      </div>
+      <a href="https://github.com/newtob/Benchmark-Tavily" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:9px 16px;border:1px solid var(--border);border-radius:2px;color:var(--fg2);font-weight:600;font-size:13px;text-decoration:none;flex:none" style-hover="background:var(--surface-2)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.64 0 8.13c0 3.6 2.29 6.65 5.47 7.73.4.08.55-.18.55-.4 0-.2-.01-.86-.01-1.56-2.01.37-2.53-.5-2.69-.96-.09-.24-.48-.96-.82-1.16-.28-.15-.68-.52-.01-.53.63-.01 1.08.59 1.23.83.72 1.22 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.2-3.64-.9-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.03.08-2.15 0 0 .67-.22 2.2.84a7.5 7.5 0 0 1 4 0c1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.95.08 2.15.51.57.82 1.29.82 2.19 0 3.13-1.87 3.82-3.65 4.02.29.25.54.75.54 1.51 0 1.09-.01 1.97-.01 2.24 0 .22.15.48.55.4A8.14 8.14 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path></svg>
+        GitHub
+      </a>
+    </div>
+
+    <div style="margin-top:32px;display:inline-flex;background:var(--surface-2);padding:4px;border-radius:6px;gap:4px">
+      <button type="button" onClick="{{ setSummary }}" style="{{ tabSummaryStyle }}">Summary</button>
+      <button type="button" onClick="{{ setSearches }}" style="{{ tabSearchesStyle }}">Searches</button>
+    </div>
+
+    <sc-if value="{{ isSummary }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <section style="margin-top:36px">
+          <h2 style="margin:0;font-weight:700;font-size:20px;color:var(--fg1)">{{ g1Title }}</h2>
+          <p style="margin:4px 0 0;font-weight:400;font-size:13px;color:var(--fg3)">{{ g1Caption }}</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+            <div style="position:relative;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:20px">
+              <div style="font-weight:600;font-size:13px;color:var(--fg3)">{{ g1ALabel }}</div>
+              <div style="margin-top:8px;font-weight:700;font-size:22px;color:var(--fg1)">{{ g1AValue }}</div>
+            </div>
+            <div style="position:relative;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--syn-yellow);border-radius:4px;padding:22px 20px 20px 18px;box-shadow:0 4px 16px rgba(0,37,53,.12)">
+              <div style="position:absolute;top:-11px;left:16px;background:var(--syn-blue);color:#fff;font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:2px">Most efficient</div>
+              <div style="font-weight:600;font-size:13px;color:var(--fg2)">{{ g1BLabel }}</div>
+              <div style="margin-top:8px;font-weight:800;font-size:22px;color:var(--syn-blue)">{{ g1BValue }}</div>
+              <sc-if value="{{ showDelta }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top:8px;font-weight:600;font-size:12px;color:var(--syn-blue-light)">{{ g1Delta }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-top:40px">
+          <h2 style="margin:0;font-weight:700;font-size:20px;color:var(--fg1)">{{ g2Title }}</h2>
+          <p style="margin:4px 0 0;font-weight:400;font-size:13px;color:var(--fg3)">{{ g2Caption }}</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+            <div style="position:relative;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:20px">
+              <div style="font-weight:600;font-size:13px;color:var(--fg3)">{{ g2ALabel }}</div>
+              <div style="margin-top:8px;font-weight:700;font-size:22px;color:var(--fg1)">{{ g2AValue }}</div>
+            </div>
+            <div style="position:relative;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--syn-yellow);border-radius:4px;padding:22px 20px 20px 18px;box-shadow:0 4px 16px rgba(0,37,53,.12)">
+              <div style="position:absolute;top:-11px;left:16px;background:var(--syn-blue);color:#fff;font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:2px">Most efficient</div>
+              <div style="font-weight:600;font-size:13px;color:var(--fg2)">{{ g2BLabel }}</div>
+              <div style="margin-top:8px;font-weight:800;font-size:22px;color:var(--syn-blue)">{{ g2BValue }}</div>
+              <sc-if value="{{ showDelta }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top:8px;font-weight:600;font-size:12px;color:var(--syn-blue-light)">{{ g2Delta }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </section>
+
+        <div style="margin-top:48px;padding-top:20px;border-top:1px solid var(--border)">
+          <p style="margin:0;font-weight:300;font-size:12px;line-height:1.6;color:var(--fg3)">Methodology: token counts are estimated with tiktoken (not each provider's exact tokenizer) and priced at a single reference model's per-token rate rather than each provider's own pricing. Figures are directional estimates, not exact bills. See <code style="font-family:var(--font-mono);font-size:11px">specs/tavily-benchmark-app.md</code> for details.</p>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSearches }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:32px;padding:56px 24px;text-align:center;border:1px dashed var(--border);border-radius:4px">
+        <div style="font-weight:700;font-size:16px;color:var(--fg1)">Per-search detail</div>
+        <p style="margin:6px 0 0;font-weight:400;font-size:13px;color:var(--fg3)">Raw per-search token and cost breakdown for each of the three sample runs — coming soon.</p>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light'|'dark'&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;section&quot;:&quot;Appearance&quot;},&quot;showDelta&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;compareBasis&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;tokens&quot;,&quot;tsType&quot;:&quot;'tokens'|'cost'&quot;,&quot;options&quot;:[&quot;tokens&quot;,&quot;cost&quot;],&quot;section&quot;:&quot;Appearance&quot;}}">
+class Component extends DCLogic {
+  state = { activeTab: 'summary' };
+
+  data = {
+    group1: {
+      title: 'Tavily: Raw Tool Call vs MCP',
+      caption: 'Average across 3 searches, ×1000.',
+      a: { label: 'Raw tool call', tokens: 128000, cost: 0.26 },
+      b: { label: 'MCP', tokens: 72667, cost: 0.15 }
+    },
+    group2: {
+      title: 'Web Content: Claude Web Search vs Tavily Extract',
+      caption: 'Average across 3 searches, ×1000.',
+      a: { label: 'Claude Web Search', tokens: 95400, cost: 0.19 },
+      b: { label: 'Tavily Extract', tokens: 41200, cost: 0.08 }
+    }
+  };
+
+  formatValue(item, basis) {
+    const tok = item.tokens.toLocaleString() + ' tok';
+    const cost = '$' + item.cost.toFixed(2);
+    return basis === 'cost' ? (cost + ' · ' + tok) : (tok + ' · ' + cost);
+  }
+
+  delta(a, b) {
+    const tokPct = Math.round((1 - b.tokens / a.tokens) * 100);
+    const costPct = Math.round((1 - b.cost / a.cost) * 100);
+    return costPct + '% cheaper · ' + tokPct + '% fewer tokens';
+  }
+
+  renderVals() {
+    const basis = this.props.compareBasis ?? 'tokens';
+    const theme = this.props.theme ?? 'light';
+    const showDelta = this.props.showDelta ?? true;
+    const activeTab = this.state.activeTab;
+    const g1 = this.data.group1, g2 = this.data.group2;
+
+    const tabBase = { border: 'none', cursor: 'pointer', fontFamily: 'var(--font-brand)', fontWeight: 600, fontSize: '14px', padding: '8px 18px', borderRadius: '4px' };
+    const activeStyle = { ...tabBase, background: 'var(--surface)', color: 'var(--fg1)', boxShadow: '0 1px 3px rgba(0,37,53,.1)' };
+    const inactiveStyle = { ...tabBase, background: 'transparent', color: 'var(--fg3)' };
+
+    return {
+      theme,
+      showDelta,
+      isSummary: activeTab === 'summary',
+      isSearches: activeTab === 'searches',
+      setSummary: () => this.setState({ activeTab: 'summary' }),
+      setSearches: () => this.setState({ activeTab: 'searches' }),
+      tabSummaryStyle: activeTab === 'summary' ? activeStyle : inactiveStyle,
+      tabSearchesStyle: activeTab === 'searches' ? activeStyle : inactiveStyle,
+      g1Title: g1.title, g1Caption: g1.caption,
+      g1ALabel: g1.a.label, g1AValue: this.formatValue(g1.a, basis),
+      g1BLabel: g1.b.label, g1BValue: this.formatValue(g1.b, basis),
+      g1Delta: this.delta(g1.a, g1.b),
+      g2Title: g2.title, g2Caption: g2.caption,
+      g2ALabel: g2.a.label, g2AValue: this.formatValue(g2.a, basis),
+      g2BLabel: g2.b.label, g2BValue: this.formatValue(g2.b, basis),
+      g2Delta: this.delta(g2.a, g2.b)
+    };
+  }
+}
+</script>
+</body>
+</html>

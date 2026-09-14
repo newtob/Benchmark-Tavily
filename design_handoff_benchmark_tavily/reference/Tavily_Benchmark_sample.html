@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:8080/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tavily Benchmark</title>
+    <link href="http://localhost:8080/_app/immutable/entry/start.YNLJLubP.js" rel="modulepreload">
+		<link href="http://localhost:8080/_app/immutable/chunks/B43bfCoj.js" rel="modulepreload">
+		<link href="http://localhost:8080/_app/immutable/chunks/cSCUALly.js" rel="modulepreload">
+		<link href="http://localhost:8080/_app/immutable/entry/app.DuVKu1ie.js" rel="modulepreload">
+		<link href="http://localhost:8080/_app/immutable/chunks/xihTtKlq.js" rel="modulepreload">
+		<link href="http://localhost:8080/_app/immutable/nodes/0.CNE-NAOc.js" rel="modulepreload">
+		<link href="http://localhost:8080/_app/immutable/nodes/2.BQteGuna.js" rel="modulepreload">
+		
+		<link href="./Tavily_Benchmark_sample_files/0.CTd9UrJT.css" rel="stylesheet">
+  <link rel="modulepreload" as="script" crossorigin="" href="http://localhost:8080/_app/immutable/nodes/1.C6fmo6hK.js"></head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><!--[--><main class="mx-auto max-w-5xl p-8"><h1 class="text-2xl font-semibold">Tavily Benchmark</h1> <p class="mt-1 text-sm text-muted-foreground">Estimates the LLM token cost and price of running each method <strong>1000 searches</strong> — a single real search's result, averaged
+    and scaled ×1000 for a more legible number (not 1000 actual API/tool
+    calls). See specs/tavily-benchmark-app.md for methodology and its
+    approximation caveats (tiktoken, not Anthropic's exact tokenizer; a
+    fixed reference model's per-token rate, not each provider's own
+    pricing).</p> <!--[0--><!----><div class="flex flex-col gap-4 mt-8"><!----><div role="tablist" class="inline-flex w-fit items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground"><!----><button type="button" role="tab" aria-selected="true" data-state="active" class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring bg-background text-foreground shadow-sm" data-testid="tab-summary">Summary<!----></button><!----> <button type="button" role="tab" aria-selected="false" data-state="inactive" class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-muted-foreground hover:text-foreground" data-testid="tab-searches">Searches<!----></button><!----><!----></div><!----> <!----><div role="tabpanel" class="outline-none" data-testid="summary-panel"><section><h2 class="text-lg font-medium">Tavily: Raw tool call vs MCP</h2> <p class="text-xs text-muted-foreground">Average across 3 searches, ×1000.</p> <div class="mt-3 grid grid-cols-2 gap-4"><div class="rounded-lg border p-4" data-testid="summary-raw-tool-call"><div class="text-sm text-muted-foreground">Raw tool call</div> <div class="mt-1 text-xl font-semibold">128,000 tok · $0.26</div></div> <div class="rounded-lg border p-4" data-testid="summary-mcp"><div class="text-sm text-muted-foreground">MCP</div> <div class="mt-1 text-xl font-semibold">72,667 tok · $0.15</div></div></div></section> <section class="mt-8"><h2 class="text-lg font-medium">Web content: Claude Web Search vs Tavily Extract</h2> <p class="text-xs text-muted-foreground">Average across 3 searches, ×1000.</p> <div class="mt-3 grid grid-cols-2 gap-4"><div class="rounded-lg border p-4" data-testid="summary-claude-search"><div class="text-sm text-muted-foreground">Claude Web Search</div> <div class="mt-1 text-xl font-semibold">72,667 tok · $0.15</div></div> <div class="rounded-lg border p-4" data-testid="summary-tavily-extract"><div class="text-sm text-muted-foreground">Tavily Extract</div> <div class="mt-1 text-xl font-semibold">104,667 tok · $0.21</div></div></div></section><!----></div><!----> <!----><!----><!----></div><!--]--></main><!--]--><!----><!--]--><!--]--> <!--[-1--><div id="svelte-announcer" aria-live="assertive" aria-atomic="true" style="position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; width: 1px; height: 1px"><!----></div><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1esry61 = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("./_app/immutable/entry/start.YNLJLubP.js"),
+						import("./_app/immutable/entry/app.DuVKu1ie.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  
+
+</body></html>
