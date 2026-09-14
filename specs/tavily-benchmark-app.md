@@ -581,11 +581,95 @@ e2e-full` passed clean.
 - Surfacing Claude web search's *real* Anthropic-billed usage next to the
   tiktoken estimate in Table 2 (see §6 note) — estimate-only for both
   columns in v1.
-- Deploying this app (Vercel or otherwise) — this plan only covers local
-  Docker execution per the stated ask; `apps/ui` being a SvelteKit app
-  does mean a future Vercel deploy is a natural, low-effort follow-up
-  (SvelteKit is natively supported), but it's not part of this plan.
 - Auth, persistence, historical trend tracking across benchmark runs.
 - An Overmind-based hot-reload local dev inner loop (`Procfile`) — the
   Docker container is the only execution path this plan commits to; a
   faster dev loop can be added later without changing this architecture.
+
+## 16. Vercel deployment
+
+Added after the app was already built and verified locally, prompted by
+the user asking how to publish it — see the decision trail below, since
+the recommended approach changed mid-conversation as better information
+became available.
+
+### Decision trail
+
+1. Checked the actual account state via the Vercel API rather than
+   assuming: `newtob's projects` (hobby plan) had **zero linked
+   projects** — the Vercel↔GitHub App connection existed at the account
+   level, but no Vercel Project had ever been created for this repo.
+2. Initially recommended restructuring `api/main.py` to serve the built
+   SvelteKit output itself (`app.frontend()`), since Vercel's monorepo
+   model is normally one Project per deployable directory and Vercel
+   doesn't run arbitrary Docker containers for standard hosting — or so
+   this plan believed at the time.
+3. **That belief was wrong**, caught by verifying against current Vercel
+   docs before implementing rather than after: Vercel now supports
+   deploying an existing Dockerfile as a **Container** (a Vercel Function
+   running the container image, Active CPU pricing, zero other config).
+   This lets the already-built-and-verified single-container design
+   deploy essentially unchanged — no FastAPI/frontend restructuring, no
+   splitting into two Vercel Projects. Surfaced this correction and
+   re-asked before implementing either path.
+
+### What Container deployment requires (verified, not assumed)
+
+- A file named exactly **`Dockerfile.vercel`** at the repo root — Vercel
+  detects this filename and deploys it as a Container with no
+  `vercel.json` needed.
+- The containerized app must listen on Vercel's **`$PORT`** env var
+  (assigned dynamically at runtime), not a hardcoded port.
+
+### What changed in this repo
+
+- **`Dockerfile.vercel`** — a symlink to `Dockerfile` (`ln -s Dockerfile
+  Dockerfile.vercel`), not a duplicate file, so the two never drift.
+  Verified `docker build -f Dockerfile.vercel .` resolves the symlink
+  correctly. (Unverified: whether Vercel's own build pipeline follows a
+  symlinked `Dockerfile.vercel` the same way a local Docker build does —
+  a plain git clone preserves symlinks and Docker's `-f` flag follows
+  them locally, so this is expected to work, but if Vercel's real build
+  ever fails to resolve it, the fallback is to make `Dockerfile.vercel` a
+  literal duplicate instead.)
+- **`Dockerfile`**: added `ENV PORT=8080` (default for local `docker run`;
+  Vercel overrides it at runtime) and the `HEALTHCHECK` now curls
+  `http://localhost:${PORT}/api/healthz` instead of a hardcoded port.
+- **`docker/nginx.conf`**: `listen 8080;` → `listen __PORT__;` (a
+  placeholder, not literal nginx syntax).
+- **`docker/entrypoint.sh`**: substitutes `__PORT__` with `${PORT:-8080}`
+  into `/tmp/nginx.conf` (not `/etc/nginx/nginx.conf` in place — that
+  path isn't writable by the non-root `appuser` this container runs as,
+  which is exactly the kind of thing this app's own multi-stage
+  `useradd`/`chown` setup exists to enforce) before `exec`-ing `nginx -c
+  /tmp/nginx.conf -g "daemon off;"`.
+- Verified for real: built via `-f Dockerfile.vercel`, ran with the
+  default port (`docker run -p 8080:8080 ...`, no `-e PORT`) and with an
+  explicit dynamic port (`-e PORT=3000 -p 3000:3000`) simulating what
+  Vercel assigns at runtime — both serve `/`, `/api/healthz`, and
+  `/api/benchmark` correctly, and Docker's own `HEALTHCHECK` reports
+  `healthy` in both cases. `just e2e-full` (the default-port path) still
+  passes unchanged.
+
+### Linking and deploying (what actually happened)
+
+- `create_git_project` (Vercel's API) reported creating a project but it
+  never actually persisted — `get_project`/`list_projects` both returned
+  nothing for it afterward. Root cause unconfirmed (propagation delay vs.
+  a real failure); **do not retry this call blindly** — it explicitly
+  warns not to create a second project under the same name.
+- The Vercel **dashboard's own Import flow worked** where the API call
+  didn't — used that instead once it was available (the GitHub App's
+  per-repo grant had come through by then).
+- **Gotcha hit after import**: a freshly imported project shows "no
+  Production deployment yet" (`To deploy to production, push to master,
+  or run vercel --prod`) — importing a repo does not, by itself, trigger
+  a build. The GitHub webhook Vercel registers on import only fires on
+  the *next* push to the production branch; a push that happened before
+  the project existed doesn't retroactively trigger anything. Fixed by
+  making a real commit (this section) and pushing to `master` again,
+  now that the webhook is live.
+- Confirm the Framework Preset actually resolved to **Container** after
+  import (it should auto-detect from `Dockerfile.vercel`'s presence); if
+  the dashboard shows anything else, override it manually before the
+  first deploy.
