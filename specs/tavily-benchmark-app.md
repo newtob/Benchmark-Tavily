@@ -539,6 +539,17 @@ e2e-full` passed clean.
 - Root Vitest's default glob also matched `e2e/*.spec.ts`, trying (and
   failing) to run Playwright specs as Vitest tests — fixed with a root
   `vitest.config.ts` excluding `e2e/**`.
+- Extending `prek.toml`'s mypy hook to cover `api`/`scripts` (§9) needed
+  more than the `files` pattern change: the mypy pre-commit hook runs in
+  its own self-contained environment with no access to this project's
+  `.venv`, so without `additional_dependencies` listing `fastapi`,
+  `pydantic`, and the rest, it silently resolved every `pydantic.BaseModel`
+  subclass as `Any` instead of raising a real type error — passing when it
+  shouldn't have, then intermittently failing depending on the hook
+  environment's cache state. `uv run mypy` directly (using the real
+  project `.venv`) never showed this, which is exactly why it went
+  unnoticed initially. Fixed by adding `additional_dependencies` to the
+  hook, pinned to the same versions as `pyproject.toml`.
 - The whole pipeline (`just check`, `just ci`, `just docker-build`, `just
   docker-run`, `just e2e-full`) has been run for real during
   implementation and passes.
