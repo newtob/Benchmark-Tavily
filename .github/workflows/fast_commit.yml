@@ -32,13 +32,13 @@ jobs:
         run: python -m uv sync --extra dev
 
       - name: Ruff lint check
-        run: python -m ruff check api/
+        run: uv run ruff check api/
 
       - name: Ruff format check
-        run: python -m ruff format --check api/
+        run: uv run ruff format --check api/
 
       - name: MyPy type check
-        run: python -m mypy api/
+        run: uv run mypy api/
 
   python-test:
     name: Python Unit Tests
@@ -59,7 +59,7 @@ jobs:
         run: python -m uv sync --extra dev
 
       - name: Run pytest
-        run: python -m pytest api/tests/ -v --tb=short
+        run: uv run pytest api/tests/ -v --tb=short
 
   node-lint:
     name: TypeScript Lint & Format
@@ -67,15 +67,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
           cache-dependency-path: 'ui/pnpm-lock.yaml'
-
-      - name: Enable pnpm
-        run: corepack enable pnpm
 
       - name: Install dependencies
         working-directory: ui
@@ -91,15 +93,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
           cache-dependency-path: 'ui/pnpm-lock.yaml'
-
-      - name: Enable pnpm
-        run: corepack enable pnpm
 
       - name: Install dependencies
         working-directory: ui
