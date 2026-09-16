@@ -51,7 +51,7 @@ Two GitHub Actions
 
 ### Secrets
 The `TAVILY_API_KEY` has been stored in a GitHub Actions Repository secret.
-A .env must be created to house this locally.  
+A .env must be created to house this locally.
 
 ## Design
 
@@ -63,7 +63,7 @@ The design has been completed in Claude Design: `@.\design_handoff_benchmark_tav
 
 
 ## AgentSoul Memory
- 
+
 Location: `@C:\Users\newt0b\Code\Agent_Context\`
 
 - A store of widely applicable decisions, conventions, and major architectural choices
@@ -92,15 +92,15 @@ The following must be found in the `AgentSoul Index`:
 - Pre-commit hooks
 - Testing Strategy
 - Repository Workflow
-  
+
 Import and implement in sub agents:
-  
+
 - GitHub Actions Standards
 - Dependency pinning
 - Justfile usage
 - Vercel Deployment
-  
+
 When implementing loop: write tests first, check pre-commit hooks pass, docker build + playwright test until green.
-  
+
 Write the plan to `@.\specs\Benchmark-Tavily-build-plan.md`.
 Ask any useful questions.

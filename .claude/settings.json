@@ -1,0 +1,64 @@
+{
+  "hooks": {
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "prek run --files $(git diff HEAD --name-only) -q"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(just *)",
+      "Bash(brew list:*)",
+      "Bash(git *)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(glab api:*)",
+      "Bash(glab auth:*)",
+      "Bash(glab mr:*)",
+      "Bash(glab opentofu:*)",
+      "Bash(grep:*)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(newrelic *)",
+      "Bash(pandoc *)",
+      "Bash(shellcheck *)",
+      "Bash(tofu init:*)",
+      "Bash(which *)",
+      "Bash(which glab:*)",
+      "Edit(.claude/*)",
+      "Edit(outputs/*)",
+      "Glob",
+      "Grep",
+      "Read",
+      "Task",
+      "TaskCreate",
+      "TaskGet",
+      "TaskList",
+      "TaskUpdate",
+      "WebFetch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:registry.terraform.io)",
+      "WebSearch",
+      "Write(.claude/*)",
+      "Write(outputs/*)",
+      "mcp__context7__*",
+      "mcp__context7__query-docs",
+      "mcp__context7__resolve-library-id",
+      "Bash(python3 *)"
+    ],
+    "deny": [
+      "Read(./.env)"
+    ]
+  },
+  "statusLine": {
+    "command": "jq -r '\"[\\(.model.display_name)] \\(.context_window.used_percentage // 0)% context\"'",
+    "type": "command"
+  },
+  "teammateMode": "tmux"
+}

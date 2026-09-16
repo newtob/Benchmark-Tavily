@@ -1,0 +1,94 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  /* Synechron design tokens (colors_and_type.css) */
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --surface-2: #F4F4F4;
+  --fg1: #000000;
+  --fg2: #002535;
+  --fg3: #808285;
+  --border: #E6E7E8;
+  --syn-yellow: #FBF321;
+  --syn-blue: #002535;
+  --syn-blue-light: #0a5a78;
+
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #002535;
+    --surface: #06303F;
+    --surface-2: #0A3D50;
+    --fg1: #FFFFFF;
+    --fg2: #BFE3EF;
+    --fg3: #8FB3C0;
+    --border: rgba(255, 255, 255, .12);
+  }
+}
+
+* {
+  @apply border-border;
+}
+
+html,
+body {
+  @apply bg-background text-fg1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    @apply opacity-0;
+  }
+  to {
+    @apply opacity-100;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    @apply opacity-0 translate-y-4;
+  }
+  to {
+    @apply opacity-100 translate-y-0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease-in-out;
+}
+
+/* Focus ring utility for accessibility */
+.focus-ring {
+  @apply outline-none ring-2 ring-offset-2 ring-blue-500;
+}
+
+/* Utility for data-testid elements (no visual effect, purely for testing) */
+[data-testid] {
+  /* No base styles; used only for test selectors */
+}

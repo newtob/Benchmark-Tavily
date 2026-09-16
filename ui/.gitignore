@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+# NOTE: pnpm-lock.yaml is intentionally NOT ignored - it must be committed
+# for `pnpm install --frozen-lockfile` (Docker build, CI) to work at all.
+package-lock.json
+
+# Build outputs
+build/
+dist/
+.svelte-kit/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+test-results.json
+playwright-report/
+playwright/.cache/
+
+# Development
+*.log
+npm-debug.log*
+pnpm-debug.log*

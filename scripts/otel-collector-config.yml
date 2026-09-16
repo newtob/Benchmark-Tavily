@@ -1,0 +1,54 @@
+# OpenTelemetry Collector configuration for local development
+# Receives traces and metrics from the app, exports to console/logs
+
+receivers:
+  # Receive traces via gRPC (OTLP)
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  # Batch processor: reduces load by batching spans/metrics
+  batch:
+    send_batch_size: 1024
+    timeout: 10s
+
+  # Memory limiter: prevents unbounded memory growth
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+exporters:
+  # Export traces to console (stdout)
+  logging:
+    loglevel: debug
+
+  # Export metrics to Prometheus (for scraping)
+  prometheus:
+    endpoint: "0.0.0.0:8888"
+
+service:
+  pipelines:
+    # Traces pipeline
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [logging]
+
+    # Metrics pipeline
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]
+
+  # Log everything
+  extensions: [health_check]
+
+extensions:
+  # Health check endpoint
+  health_check:
+    endpoint: 0.0.0.0:13133

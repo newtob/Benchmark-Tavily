@@ -1,0 +1,25 @@
+# Fixed search queries for benchmarking
+# Each query is run against all three search methods (Tavily CLI, Tavily MCP, Search-in-Prompt)
+# Results are cached in api/fixtures/ and never fetched live in CI/tests
+#
+# NOTE: `successfuly_return_includes` is spelled exactly as specified in
+# specs/plan_prompt.md - do not "fix" the spelling, code reads this literal key.
+
+searches:
+  - query: "return the latest release of the package `uv`"
+    note: "Find current version number of uv package manager"
+    successfuly_return_includes:
+      - "uv"
+      - "0."
+
+  - query: "what is the current stable version of the Svelte compiler"
+    note: "Find the latest stable Svelte compiler version"
+    successfuly_return_includes:
+      - "svelte"
+      - "@sveltejs/svelte"
+
+  - query: "what does the Tavily extract API endpoint return"
+    note: "Document structure and response format of Tavily extract API"
+    successfuly_return_includes:
+      - "extract"
+      - "api"
