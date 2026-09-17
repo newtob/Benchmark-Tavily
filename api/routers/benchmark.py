@@ -24,6 +24,11 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api", tags=["benchmark"])
 
+# Displayed costs project a single search's average cost out to this many
+# searches, rather than showing the raw total across the small fixed sample
+# in searches.yaml.
+ESTIMATE_SEARCH_COUNT = 1000
+
 
 @router.get("/benchmark", response_model=BenchmarkResponse)
 async def get_benchmark(
@@ -34,17 +39,17 @@ async def get_benchmark(
 ) -> BenchmarkResponse:
     """Get benchmark comparison for all search methods.
 
-    Loads fixture data (cached search results), calculates token counts
-    and costs for each method, and returns two comparison groups:
-    - Tokens comparison
-    - Cost comparison
+    Loads fixture data (cached search results), calculates each method's
+    average tokens/cost per search, and projects that out to
+    ``ESTIMATE_SEARCH_COUNT`` searches, returning a single cost comparison
+    group.
 
     Args:
         model: The Claude model to use (default: claude-sonnet-5).
             Must be one of: claude-haiku-4-5, claude-sonnet-5, claude-opus-5.
 
     Returns:
-        BenchmarkResponse containing two comparison groups with results
+        BenchmarkResponse containing one cost comparison group with results
         for all search methods.
 
     Raises:
@@ -71,9 +76,25 @@ async def get_benchmark(
                 total_tokens += tokens
                 total_cost += cost
 
-            method_metrics[method] = {"tokens": total_tokens, "cost": total_cost}
+            # Project the average per-search tokens/cost out to
+            # ESTIMATE_SEARCH_COUNT searches, rather than showing the raw
+            # total across the small fixed sample in searches.yaml.
+            if results:
+                avg_tokens = total_tokens / len(results)
+                avg_cost = total_cost / len(results)
+            else:
+                avg_tokens = 0.0
+                avg_cost = 0.0
+
+            estimated_tokens = avg_tokens * ESTIMATE_SEARCH_COUNT
+            estimated_cost = avg_cost * ESTIMATE_SEARCH_COUNT
+
+            method_metrics[method] = {"tokens": estimated_tokens, "cost": estimated_cost}
             method_has_data[method] = len(results) > 0
-            logger.info(f"Method {method}: {total_tokens} tokens, ${total_cost:.6f} cost")
+            logger.info(
+                f"Method {method}: {estimated_tokens:.0f} tokens, ${estimated_cost:.6f} cost "
+                f"(estimated for {ESTIMATE_SEARCH_COUNT} searches)"
+            )
 
         # Sort methods by cost (then tokens as a tiebreaker) to find the winner.
         # A method with no recorded results at all (e.g. missing fixtures)
@@ -100,14 +121,11 @@ async def get_benchmark(
 
         groups = [
             BenchmarkGroup(
-                title="Token Count Comparison",
-                caption="Total tokens used across all search results for each method",
-                items=items,
-                winner_index=0,
-            ),
-            BenchmarkGroup(
                 title="Cost Comparison",
-                caption=f"Total cost in USD for {len(searches)} searches using {model}",
+                caption=(
+                    f"Estimated cost in USD for {ESTIMATE_SEARCH_COUNT} searches using "
+                    f"{model}, projected from each method's average cost per search"
+                ),
                 items=items,
                 winner_index=0,
             ),

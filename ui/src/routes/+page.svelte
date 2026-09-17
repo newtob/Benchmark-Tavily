@@ -70,7 +70,10 @@
       <div class="flex items-center justify-between mb-4">
         <div>
           <h1 class="text-4xl font-bold text-fg1 mb-2">Tavily Benchmark</h1>
-          <p class="text-fg3">Performance comparison across search methods and models</p>
+          <p class="text-fg3">
+            Performance comparison across search methods and models. Costs are estimated by
+            multiplying each search's average cost by 1,000.
+          </p>
         </div>
       </div>
 

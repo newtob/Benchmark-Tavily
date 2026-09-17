@@ -7,6 +7,7 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from api.models.schemas import BenchmarkResponse, SearchQuery, SearchResult
+from api.services.token_calculator import calculate_tokens_and_cost
 
 
 class TestBenchmarkRouteBasics:
@@ -63,14 +64,14 @@ class TestBenchmarkRouteBasics:
 class TestBenchmarkGroupStructure:
     """Tests for benchmark response group structure."""
 
-    def test_benchmark_has_two_groups(
+    def test_benchmark_has_one_group(
         self,
         app_client: TestClient,
         mock_load_searches: None,
         mock_load_fixtures: None,
         mock_calculate_tokens_and_cost: None,
     ) -> None:
-        """Assert that response.groups has exactly 2 items.
+        """Assert that response.groups has exactly 1 item: Cost Comparison.
 
         Args:
             app_client: FastAPI test client.
@@ -81,10 +82,8 @@ class TestBenchmarkGroupStructure:
         response = app_client.get("/api/benchmark")
         data = response.json()
 
-        assert len(data["groups"]) == 2
-        group_titles = [g["title"] for g in data["groups"]]
-        assert "Token Count Comparison" in group_titles
-        assert "Cost Comparison" in group_titles
+        assert len(data["groups"]) == 1
+        assert data["groups"][0]["title"] == "Cost Comparison"
 
     def test_each_group_has_three_items(
         self,
@@ -276,10 +275,109 @@ class TestBenchmarkWinner:
                     response = app_client.get("/api/benchmark")
                     data = response.json()
 
-                    # Winner should be tavily_mcp (lowest tokens: 125)
+                    # Winner should be tavily_mcp (lowest tokens: 125 per search).
+                    # Only 1 search was mocked, so the displayed value is that
+                    # single search's tokens projected out to 1000 searches.
                     winner_item = data["groups"][0]["items"][0]
                     # The items are sorted by cost then tokens
-                    assert winner_item["tokens"] == 125
+                    assert winner_item["tokens"] == 125 * 1000
+
+
+class TestBenchmarkCostEstimate:
+    """Tests for the 1000-search cost/token projection."""
+
+    def test_single_search_cost_is_multiplied_by_1000(
+        self,
+        app_client: TestClient,
+    ) -> None:
+        """With exactly one fixed search, the displayed tokens/cost must equal
+        that one search's tokens/cost multiplied by 1000 - the documented
+        estimation methodology (see ESTIMATE_SEARCH_COUNT in
+        api/routers/benchmark.py).
+        """
+        single_search_results = {
+            "fixture_1": [
+                SearchResult(
+                    method="tavily_cli",
+                    raw_response="X" * 400,
+                    timestamp="2024-01-01T00:00:00",
+                ),
+            ],
+        }
+
+        with (
+            patch(
+                "api.routers.benchmark.load_searches",
+                return_value=[
+                    SearchQuery(query="test", note="test", successfuly_return_includes=[])
+                ],
+            ),
+            patch(
+                "api.routers.benchmark.load_fixtures",
+                return_value=single_search_results,
+            ),
+        ):
+            one_search_tokens, one_search_cost = calculate_tokens_and_cost(
+                "X" * 400, "claude-sonnet-5"
+            )
+
+            response = app_client.get("/api/benchmark?model=claude-sonnet-5")
+            data = response.json()
+
+            item = next(i for i in data["groups"][0]["items"] if i["method"] == "tavily_cli")
+            assert item["tokens"] == one_search_tokens * 1000
+            assert item["cost_usd"] == one_search_cost * 1000
+
+    def test_multi_search_cost_uses_average_not_raw_sum(
+        self,
+        app_client: TestClient,
+    ) -> None:
+        """With multiple fixed searches for a method, the projection must use
+        their average cost per search (then x1000) - not the raw sum across
+        the fixed sample, which would scale with the sample size instead of
+        representing a single search's cost.
+        """
+        two_search_results = {
+            "fixture_1": [
+                SearchResult(
+                    method="tavily_cli",
+                    raw_response="X" * 400,
+                    timestamp="2024-01-01T00:00:00",
+                ),
+            ],
+            "fixture_2": [
+                SearchResult(
+                    method="tavily_cli",
+                    raw_response="X" * 800,
+                    timestamp="2024-01-01T00:00:00",
+                ),
+            ],
+        }
+
+        with (
+            patch(
+                "api.routers.benchmark.load_searches",
+                return_value=[
+                    SearchQuery(query="a", note="a", successfuly_return_includes=[]),
+                    SearchQuery(query="b", note="b", successfuly_return_includes=[]),
+                ],
+            ),
+            patch(
+                "api.routers.benchmark.load_fixtures",
+                return_value=two_search_results,
+            ),
+        ):
+            tokens_1, cost_1 = calculate_tokens_and_cost("X" * 400, "claude-sonnet-5")
+            tokens_2, cost_2 = calculate_tokens_and_cost("X" * 800, "claude-sonnet-5")
+            expected_tokens = ((tokens_1 + tokens_2) / 2) * 1000
+            expected_cost = ((cost_1 + cost_2) / 2) * 1000
+
+            response = app_client.get("/api/benchmark?model=claude-sonnet-5")
+            data = response.json()
+
+            item = next(i for i in data["groups"][0]["items"] if i["method"] == "tavily_cli")
+            assert item["tokens"] == int(expected_tokens)
+            assert item["cost_usd"] == expected_cost
 
 
 class TestBenchmarkModelParameter:
