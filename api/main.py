@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from api.routers import benchmark_router
+from api.routers import benchmark_router, searches_router
 from api.services import load_fixtures, load_searches
 
 logging.basicConfig(
@@ -107,6 +107,7 @@ app.add_middleware(
 )
 
 app.include_router(benchmark_router)
+app.include_router(searches_router)
 
 
 @app.get("/health")

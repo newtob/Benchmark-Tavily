@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ApiError, type BenchmarkResponse, schemas } from "./models";
+import { ApiError, type BenchmarkResponse, type SearchQuery, schemas } from "./models";
 
 const API_BASE = "/api";
 
@@ -21,6 +21,38 @@ export async function fetchBenchmark(model: string): Promise<BenchmarkResponse> 
 		const validated = schemas.benchmarkResponse.parse(data);
 
 		return validated;
+	} catch (error) {
+		if (error instanceof ApiError) {
+			throw error;
+		}
+
+		if (error instanceof TypeError) {
+			throw new ApiError(`Network error: ${error.message}`, 0);
+		}
+
+		if (error instanceof z.ZodError) {
+			throw new ApiError(`Invalid response format: ${error.message}`, 422);
+		}
+
+		throw new ApiError(`Unexpected error: ${String(error)}`, 500);
+	}
+}
+
+/**
+ * Fetch the fixed benchmark search queries (query, note, expected result
+ * substrings) from GET /api/searches.
+ */
+export async function fetchSearches(): Promise<SearchQuery[]> {
+	try {
+		const response = await fetch(`${API_BASE}/searches`);
+
+		if (!response.ok) {
+			throw new ApiError(`Failed to fetch searches: ${response.statusText}`, response.status);
+		}
+
+		const data = await response.json();
+
+		return schemas.searches.parse(data);
 	} catch (error) {
 		if (error instanceof ApiError) {
 			throw error;

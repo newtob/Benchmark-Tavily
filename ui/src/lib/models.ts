@@ -40,10 +40,25 @@ const BenchmarkResponseSchema = z.object({
 
 export type BenchmarkResponse = z.infer<typeof BenchmarkResponseSchema>;
 
+/**
+ * A fixed benchmark search query. Mirrors api/models/schemas.py::SearchQuery.
+ * `successfuly_return_includes` is spelled exactly as the API returns it -
+ * see searches.yaml's note on this key name; don't "fix" the typo here.
+ */
+const SearchQuerySchema = z.object({
+	query: z.string(),
+	note: z.string(),
+	successfuly_return_includes: z.array(z.string()),
+});
+
+export type SearchQuery = z.infer<typeof SearchQuerySchema>;
+
 export const schemas = {
 	benchmarkItem: BenchmarkItemSchema,
 	benchmarkGroup: BenchmarkGroupSchema,
 	benchmarkResponse: BenchmarkResponseSchema,
+	searchQuery: SearchQuerySchema,
+	searches: z.array(SearchQuerySchema),
 };
 
 /** Anthropic models the UI lets the user pick between (must match api RATES keys). */

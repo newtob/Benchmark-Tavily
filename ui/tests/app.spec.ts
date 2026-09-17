@@ -46,15 +46,35 @@ test.describe("Benchmark-Tavily UI", () => {
 		const searchesTab = page.locator("[data-testid=tab-searches]");
 		await searchesTab.click();
 
-		// Wait for the Searches panel placeholder to be visible
-		const searchesPlaceholder = page.locator("[data-testid=searches-placeholder]");
-		await searchesPlaceholder.waitFor({ state: "visible", timeout: 10000 });
+		// Wait for the Searches panel to be visible
+		const searchesPanel = page.locator("[data-testid=searches-panel]");
+		await searchesPanel.waitFor({ state: "visible", timeout: 10000 });
 
 		// Verify Searches tab is now active
 		await expect(searchesTab).toHaveAttribute("aria-selected", "true");
 
 		// Verify Summary tab is no longer active
 		await expect(summaryTab).toHaveAttribute("aria-selected", "false");
+	});
+
+	test("populates Searches tab with query details", async ({ page }) => {
+		// Navigate to the home page
+		await page.goto("/");
+
+		// Switch to the Searches tab
+		const searchesTab = page.locator("[data-testid=tab-searches]");
+		await searchesTab.click();
+
+		// Wait for at least one search card to render
+		const searchItems = page.locator("[data-testid=search-item]");
+		await searchItems.first().waitFor({ state: "visible", timeout: 10000 });
+
+		const count = await searchItems.count();
+		expect(count).toBeGreaterThan(0);
+
+		// Each card should show the query text and its expected-result terms
+		const firstItemText = await searchItems.first().textContent();
+		expect(firstItemText).toMatch(/uv/i);
 	});
 
 	test("includes 'Tavily' in rendered content", async ({ page }) => {

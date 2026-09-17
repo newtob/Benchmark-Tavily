@@ -3,15 +3,20 @@
   import { Card } from '$lib/components/ui/card';
   import TabSwitcher from '$lib/components/TabSwitcher.svelte';
   import ComparisonGroup from '$lib/components/ComparisonGroup.svelte';
-  import { fetchBenchmark, formatApiError } from '$lib/api-client';
+  import SearchCard from '$lib/components/SearchCard.svelte';
+  import { fetchBenchmark, fetchSearches, formatApiError } from '$lib/api-client';
   import { MODELS } from '$lib/models';
-  import type { BenchmarkResponse } from '$lib/models';
+  import type { BenchmarkResponse, SearchQuery } from '$lib/models';
 
   let activeTab = $state<'summary' | 'searches'>('summary');
   let selectedModel = $state<string>(MODELS[1].id); // default: Sonnet 5 (spec's primary reference model)
   let data = $state<BenchmarkResponse | null>(null);
   let loading = $state(false);
   let error = $state<string | null>(null);
+
+  let searches = $state<SearchQuery[] | null>(null);
+  let searchesLoading = $state(false);
+  let searchesError = $state<string | null>(null);
 
   async function loadBenchmark() {
     loading = true;
@@ -27,8 +32,22 @@
     }
   }
 
+  async function loadSearches() {
+    searchesLoading = true;
+    searchesError = null;
+
+    try {
+      searches = await fetchSearches();
+    } catch (err) {
+      searchesError = formatApiError(err);
+    } finally {
+      searchesLoading = false;
+    }
+  }
+
   onMount(() => {
     loadBenchmark();
+    loadSearches();
   });
 
   function handleModelChange(event: Event) {
@@ -62,10 +81,10 @@
           data-testid="model-selector"
           value={selectedModel}
           onchange={handleModelChange}
-          class="px-3 py-2 border border-border rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-syn-blue-light focus:border-syn-blue-light"
+          class="px-3 py-2 border border-border rounded-md text-sm font-medium bg-surface text-fg1 focus:outline-none focus:ring-2 focus:ring-syn-blue-light focus:border-syn-blue-light"
         >
           {#each MODELS as model}
-            <option value={model.id}>{model.label}</option>
+            <option value={model.id} class="bg-surface text-fg1">{model.label}</option>
           {/each}
         </select>
       </div>
@@ -125,12 +144,41 @@
     {/if}
 
     {#if activeTab === 'searches'}
-      <div
-        class="p-14 border border-dashed border-border rounded text-center"
-        data-testid="searches-placeholder"
-      >
-        <p class="text-fg1 text-sm font-bold mb-2">Per-search detail</p>
-        <p class="text-fg3 text-xs">Detailed search results coming soon</p>
+      <div class="space-y-4" data-testid="searches-panel">
+        {#if searchesLoading}
+          <div class="space-y-4">
+            {#each [1, 2, 3] as skeleton (skeleton)}
+              <Card class="p-6">
+                <div class="space-y-3">
+                  <div class="h-5 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+                  <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                </div>
+              </Card>
+            {/each}
+          </div>
+        {:else if searchesError}
+          <Card class="p-6 border-red-200 bg-red-50">
+            <div class="text-center">
+              <h3 class="text-lg font-semibold text-red-900 mb-2">Failed to Load Searches</h3>
+              <p class="text-red-700 text-sm mb-4">{searchesError}</p>
+              <button
+                type="button"
+                onclick={loadSearches}
+                class="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          </Card>
+        {:else if searches && searches.length > 0}
+          {#each searches as search (search.query)}
+            <SearchCard {search} />
+          {/each}
+        {:else}
+          <Card class="p-6 text-center">
+            <p class="text-gray-600">No searches configured.</p>
+          </Card>
+        {/if}
       </div>
     {/if}
 
