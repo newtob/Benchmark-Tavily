@@ -23,8 +23,11 @@ WORKDIR /ui
 # Copy package files
 COPY ui/package.json ui/pnpm-lock.yaml ./
 
-# Install pnpm (version pinned via package.json's "packageManager" field)
-RUN corepack enable && \
+# Install pnpm (version pinned via package.json's "packageManager" field).
+# Corepack is no longer bundled with Node.js as of Node 25+, so it must be
+# installed explicitly before it can be enabled.
+RUN npm install -g corepack@latest && \
+    corepack enable && \
     pnpm install --frozen-lockfile
 
 # Copy source and build
@@ -46,28 +49,35 @@ RUN useradd -m -u 1000 appuser
 
 WORKDIR /app
 
-# Copy Python virtual environment from builder
-COPY --from=python-builder /app/.venv /app/.venv
+# Copy Python virtual environment from builder. Ownership is set inline via
+# --chown (not a separate `chown -R` RUN afterward) because a recursive chown
+# in its own layer forces a full copy-up of every file it touches on many
+# storage drivers - doubling the effective size of everything copied before
+# it (~67MB in this image, roughly the size of .venv itself).
+COPY --from=python-builder --chown=appuser:appuser /app/.venv /app/.venv
 
 # Copy compiled UI from builder (adapter-static writes to ui/build, see
 # ui/svelte.config.js)
-COPY --from=node-builder /ui/build /var/www/html
+COPY --from=node-builder --chown=appuser:appuser /ui/build /var/www/html
 
 # Copy application code
-COPY api/ /app/api/
-COPY searches.yaml /app/
+COPY --chown=appuser:appuser api/ /app/api/
+COPY --chown=appuser:appuser searches.yaml /app/
 
 # Copy nginx and startup scripts
-COPY scripts/nginx.conf.template /etc/nginx/nginx.conf.template
-COPY scripts/entrypoint.sh /app/entrypoint.sh
+COPY --chown=appuser:appuser scripts/nginx.conf.template /etc/nginx/nginx.conf.template
+COPY --chown=appuser:appuser scripts/entrypoint.sh /app/entrypoint.sh
 
-# Make entrypoint executable and fix permissions. nginx's pidfile lives
-# under /tmp/nginx (created by entrypoint.sh at startup), not /var/run,
-# since /var/run isn't writable by a non-root user on this base image.
-# /var/lib/nginx must also be writable - nginx creates its client_body/proxy
-# temp directories under there on first use.
+# Make entrypoint executable and fix permissions on nginx's own runtime dirs
+# (these still need a real chown -R: apt's nginx install leaves pre-existing
+# root-owned files under them, e.g. /var/log/nginx/error.log, that appuser
+# must be able to write to). nginx's pidfile lives under /tmp/nginx (created
+# by entrypoint.sh at startup), not /var/run, since /var/run isn't writable
+# by a non-root user on this base image. /var/lib/nginx must also be
+# writable - nginx creates its client_body/proxy temp directories under
+# there on first use. Both dirs are small, so a recursive chown here is cheap.
 RUN chmod +x /app/entrypoint.sh && \
-    chown -R appuser:appuser /app /var/www /var/log/nginx /var/lib/nginx
+    chown -R appuser:appuser /var/log/nginx /var/lib/nginx
 
 # Switch to non-root user
 USER appuser
