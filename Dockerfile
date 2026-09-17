@@ -21,8 +21,11 @@ WORKDIR /ui
 # Copy package files
 COPY ui/package.json ui/pnpm-lock.yaml ./
 
-# Install pnpm (version pinned via package.json's "packageManager" field)
-RUN corepack enable && \
+# Install pnpm (version pinned via package.json's "packageManager" field).
+# Corepack is no longer bundled with Node.js as of Node 25+, so it must be
+# installed explicitly before it can be enabled.
+RUN npm install -g corepack@latest && \
+    corepack enable && \
     pnpm install --frozen-lockfile
 
 # Copy source and build
