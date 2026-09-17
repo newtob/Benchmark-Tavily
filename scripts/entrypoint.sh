@@ -6,18 +6,20 @@ set -e
 
 # Set PORT from environment, default to 8080
 PORT=${PORT:-8080}
+# Internal FastAPI/uvicorn port, proxied by nginx - defaults to 8000
+API_PORT=${API_PORT:-8000}
 echo "🚀 Starting Benchmark-Tavily on port $PORT"
 
-# Create nginx config with PORT substitution
+# Create nginx config with PORT and API_PORT substitution
 mkdir -p /tmp/nginx
-export PORT
-envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /tmp/nginx/nginx.conf
+export PORT API_PORT
+envsubst '${PORT} ${API_PORT}' < /etc/nginx/nginx.conf.template > /tmp/nginx/nginx.conf
 
 # Start nginx in the background
 echo "🌐 Starting nginx..."
 nginx -c /tmp/nginx/nginx.conf -g 'daemon off;' &
 NGINX_PID=$!
-echo "👉 App will be at http://localhost:$PORT (port 8000 is internal-only, not published)"
+echo "👉 App will be at http://localhost:$PORT (port $API_PORT is internal-only, not published)"
 
 # Start FastAPI/uvicorn on loopback (only accessible via nginx)
 echo "⚙️  Starting FastAPI..."
@@ -33,7 +35,7 @@ export PATH="/app/.venv/bin:$PATH"
 exec python -m uvicorn \
     api.main:app \
     --host 127.0.0.1 \
-    --port 8000 \
+    --port "$API_PORT" \
     --log-level info &
 
 UVICORN_PID=$!

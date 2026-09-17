@@ -1,7 +1,7 @@
 # Multi-stage Docker build: Python builder → Node builder → Runtime
 
 # Stage 1: Python dependencies
-FROM python:3.11-slim-bookworm AS python-builder
+FROM python:3.14-slim-bookworm AS python-builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir uv && \
     uv sync --no-dev
 
 # Stage 2: Node/SvelteKit build
-FROM node:20-bookworm-slim AS node-builder
+FROM node:26-bookworm-slim AS node-builder
 
 WORKDIR /ui
 
@@ -30,7 +30,7 @@ COPY ui/ .
 RUN pnpm build
 
 # Stage 3: Runtime
-FROM python:3.11-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 # Install runtime dependencies: nginx, curl (for health check), gettext-base
 # (provides envsubst, used by entrypoint.sh for $PORT substitution)

@@ -1,5 +1,5 @@
 # Nginx configuration template
-# $PORT is substituted at startup
+# $PORT and $API_PORT are substituted at startup
 
 # No `user` directive: nginx here is never started as root (the container's
 # ENTRYPOINT already runs as the non-root appuser via `USER appuser`), so
@@ -52,7 +52,7 @@ http {
         location /api/ {
             limit_req zone=api burst=20 nodelay;
 
-            proxy_pass http://127.0.0.1:8000;
+            proxy_pass http://127.0.0.1:$API_PORT;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
@@ -91,7 +91,7 @@ http {
 
         # Health check endpoint (no auth required)
         location /api/health {
-            proxy_pass http://127.0.0.1:8000;
+            proxy_pass http://127.0.0.1:$API_PORT;
             access_log off;
         }
     }
