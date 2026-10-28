@@ -9,6 +9,7 @@ from typing import Any
 
 import pytest
 
+from api.services.benchmark_inputs import load_web_content_pages
 from api.services.claude_web_search import parse_stream_events
 
 FIXTURES = Path(__file__).resolve().parent.parent / "api" / "fixtures"
@@ -17,7 +18,7 @@ CLAUDE_FILES = sorted((FIXTURES / "web_content" / "claude_web_search").glob("*.j
 
 
 def test_fixtures_exist() -> None:
-    assert len(FIXTURE_FILES) == 30
+    assert len(FIXTURE_FILES) == 3 * len(load_web_content_pages())
 
 
 @pytest.mark.parametrize("path", FIXTURE_FILES, ids=lambda p: str(p.relative_to(FIXTURES)))
@@ -29,22 +30,7 @@ def test_no_placeholder_fixtures(path: Path) -> None:
     )
 
 
-# Claude Code's WebFetch refuses some hosts (e.g. www.bbc.co.uk): the recorded
-# fixture is the model's "unable to fetch" turn, with an empty tool result.
-KNOWN_BLOCKED = {"3.json"}
-CLAUDE_PARAMS = [
-    pytest.param(
-        p,
-        id=p.name,
-        marks=pytest.mark.xfail(reason="Claude Code WebFetch blocks this host")
-        if p.name in KNOWN_BLOCKED
-        else (),
-    )
-    for p in CLAUDE_FILES
-]
-
-
-@pytest.mark.parametrize("path", CLAUDE_PARAMS)
+@pytest.mark.parametrize("path", CLAUDE_FILES, ids=lambda p: p.name)
 def test_claude_fixtures_measure_real_search_ingestion(path: Path) -> None:
     data = json.loads(path.read_text())
     assert data["web_search_calls"] >= 1

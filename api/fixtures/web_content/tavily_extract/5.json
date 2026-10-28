@@ -1,6 +1,6 @@
 {
-  "url": "https://albertsemple.com/",
-  "response_text": "Home\n\n# Albert Semple\n\n## Bad Poetry\n\nWelcome to the Albert Semple poetry site, publishing poems and poetry related ideas for your enjoyment!\n\n### Latest Blog Article\n\n[The Farage Riots:](/blog/2024-08-08--FarageRiots) A poem recounting the different ways far-right protestors were \"expressing legitimate concerns\" this week.\n\nPublished: 8 Aug 2024\n\n### Bad Poetry\n\nComplete works of bad poetry grouped into collections by theme.\n\nFor example: light verse, dark verse, Burns-inspired, and Canterbury Tales-inspired.\n\n### Rhyming Dictionary\n\nThis dictionary finds rhymes for final-stressed words in the Scottish accent, showing only rhymes that are valid in the Scottish pronunciation of English.\n\n### [About the Author](about)\n\nThis page gives more information about Albert and this site.",
-  "latency_ms": 774.931625026511,
-  "response_bytes": 788
+  "url": "https://www.advancingengineering.dev/",
+  "response_text": "{\"results\": [], \"failed_results\": [{\"url\": \"https://www.advancingengineering.dev/\", \"error\": \"Failed to fetch url\"}], \"response_time\": 0.57, \"request_id\": \"ac76ae2d-eb76-4303-ab1f-76f2f16a7248\"}",
+  "latency_ms": 1058.300083008362,
+  "response_bytes": 194
 }

@@ -1,39 +1,31 @@
 {
-  "question": "Fetch https://www.gnu.org/licenses/gpl-3.0.html with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
-  "response_text": "I couldn't retrieve the GPL-3.0 text. I called WebFetch three times and gnu.org returned HTTP 429 (Too Many Requests) each time, with a `Retry-After: 4` header. Two of those calls were to the URL you gave. The third was to the plain-text version, `https://www.gnu.org/licenses/gpl-3.0.txt`. I retried right away each time, without a real 4-second pause, so the server may still have been throttling me.\n\nI don't want to reproduce the license from memory. You asked for the text verbatim, and a recalled copy of a document this long could have small errors.\n\nYou could ask me to try again in a moment, since the rate limit may have cleared. Or you could get it directly with `curl -O https://www.gnu.org/licenses/gpl-3.0.txt`. If you'd like, I can also try another official mirror, such as the copy on spdx.org or the one in the GitHub licenses repo.",
-  "latency_ms": 11488.434916973347,
-  "response_bytes": 849,
-  "session_id": "2d461568-3ca6-4903-a78b-01177c908f73",
+  "question": "Fetch https://www.rfc-editor.org/rfc/rfc1149.html with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "WebFetch didn't return the full text. Its helper model said it couldn't reproduce the page verbatim and gave a summary instead, so I don't have the verbatim text to give you. I won't reconstruct it from memory, because that wouldn't be a faithful copy of the page.\n\nHere is the summary it returned:\n\n- **What it is:** RFC 1149, \"A Standard for the Transmission of IP Datagrams on Avian Carriers,\" by David Waitzman of BBN, dated 1 April 1990. It's an April Fools memo.\n- **Encoding:** Datagrams are printed in hexadecimal on a small paper scroll. The scroll is wrapped around a bird's leg and secured with duct tape. The recipient scans it back into electronic form.\n- **Performance:** Delay is high and throughput is low. The memo says the \"bandwidth is limited to the leg length.\"\n- **Scalability:** Many carriers can share airspace with little interference, and they have a built-in collision avoidance system.\n- **Reliability:** IP is best-effort, so losing a carrier is tolerable.\n- **Security:** Normal operation is generally safe, but encryption is recommended in tactical environments.\n\nYou can get the exact text in either of these ways:\n- Run `curl -s https://www.rfc-editor.org/rfc/rfc1149.txt` in your terminal. I can run it for you and save the output to a file if you'd like.\n- Open https://www.rfc-editor.org/rfc/rfc1149.html in a browser.",
+  "latency_ms": 16268.990125012351,
+  "response_bytes": 1354,
+  "session_id": "2829d187-0e50-4a70-afa5-9daeea407d88",
   "model": "claude-sonnet-5-5",
-  "total_cost_usd": 0.019679799999999997,
-  "search_ingest_tokens": 650,
-  "web_search_calls": 3,
-  "tool_result_text": "The server returned HTTP 429 Too Many Requests.\nRetry-After: 4\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.\n\nThe server returned HTTP 429 Too Many Requests.\nRetry-After: 4\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.\n\nThe server returned HTTP 429 Too Many Requests.\nRetry-After: 4\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.",
+  "total_cost_usd": 0.0190305,
+  "search_ingest_tokens": 440,
+  "web_search_calls": 1,
+  "tool_result_text": "I can't reproduce the full page verbatim, but here's a summary.\n\nRFC 1149, \"A Standard for the Transmission of IP Datagrams on Avian Carriers,\" by David Waitzman of BBN, is dated 1 April 1990 and is an April Fools memo. It proposes sending IP datagrams by carrier pigeon:\n\n- **Encoding:** Datagrams are printed in hexadecimal on a small paper scroll wrapped around a bird's leg and secured with duct tape. The recipient scans the paper back into electronic form.\n- **Performance:** Delay is high and throughput is low. As the memo puts it, the \"bandwidth is limited to the leg length.\"\n- **Scalability:** Many carriers can share airspace with little interference, and they have a built-in collision avoidance system.\n- **Reliability:** Because IP is best-effort, losing a carrier is tolerable, and delivery is retried until the carrier drops.\n- **Security:** Normal operation is generally safe, but encryption is recommended in tactical environments.",
   "api_calls": [
     {
-      "input_total": 3487,
+      "input_total": 3486,
       "output_tokens": 24
     },
     {
-      "input_total": 3703,
-      "output_tokens": 9
-    },
-    {
-      "input_total": 3977,
-      "output_tokens": 24
-    },
-    {
-      "input_total": 4194,
-      "output_tokens": 308
+      "input_total": 3950,
+      "output_tokens": 5
     }
   ],
   "usage": {
-    "input_tokens": 8,
-    "cache_creation_input_tokens": 2815,
-    "cache_read_input_tokens": 12538,
-    "output_tokens": 715,
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2571,
+    "cache_read_input_tokens": 4861,
+    "output_tokens": 757,
     "output_tokens_details": {
-      "thinking_tokens": 29
+      "thinking_tokens": 141
     },
     "server_tool_use": {
       "web_search_requests": 0,
@@ -41,19 +33,19 @@
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 2815,
+      "ephemeral_1h_input_tokens": 2571,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "global",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 308,
-        "cache_read_input_tokens": 3975,
-        "cache_creation_input_tokens": 217,
+        "output_tokens": 640,
+        "cache_read_input_tokens": 3484,
+        "cache_creation_input_tokens": 464,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 217
+          "ephemeral_1h_input_tokens": 464
         },
         "type": "message"
       }

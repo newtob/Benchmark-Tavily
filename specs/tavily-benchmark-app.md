@@ -685,9 +685,8 @@ Code's WebFetch, Tavily Extract and TinyFish Fetch. The earlier search tables
 different pages and result counts, so their payloads cannot be made identical
 across tools, whereas loading the same URL can.
 
-- **Pages** (`api/fixtures/web_content/inputs.yaml`): 10 pages chosen to be
-  static enough to repeat — three long Wikipedia articles, a fixed BBC
-  article, letsencrypt.org, two small personal sites (one client-rendered),
+- **Pages** (`api/fixtures/web_content/inputs.yaml`): 9 pages chosen to be
+  static enough to repeat — three long Wikipedia articles, letsencrypt.org, two small personal sites (one client-rendered),
   the GPL-3.0 text, RFC 1149 and example.com.
 - **Methods**: `tavily_extract` (REST, markdown, basic depth);
   `tinyfish_fetch` (`tinyfish fetch content get <url> --format markdown`, CLI);
@@ -697,8 +696,7 @@ across tools, whereas loading the same URL can.
 - **Recording**: `just record-fixtures` (`--tavily-only`, `--tinyfish-only`,
   `--claude-only` select a leg). The served app only replays fixtures.
 - **Caveats**: (1) Claude's WebFetch summarises the page with a small model,
-  so its token count is a summary, not the page; (2) some hosts are blocked
-  (bbc.co.uk) — that fixture records the refusal and is an expected failure in
-  the validity test; (3) a tool that fails or returns near-empty content scores
+  so its token count is a summary, not the page; (2) some hosts are blocked by Claude Code's WebFetch (bbc.co.uk, which is why
+  the BBC article was dropped from the page list); (3) a tool that fails or returns near-empty content scores
   few tokens, so the "most efficient" flag is not quality-adjusted; (4) TinyFish
   fetch may serve cached content (the CLI exposes no `ttl`).

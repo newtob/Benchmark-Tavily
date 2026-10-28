@@ -33,7 +33,7 @@ Claude pricing:
 
 ## The Tavily Benchmark app
 
-A single page-load comparison: the same 10 static URLs loaded with Claude
+A single page-load comparison: the same 9 static URLs loaded with Claude
 Code's WebFetch, Tavily Extract and TinyFish Fetch, comparing tokens/price
 (see the spec §17 for the page list and caveats).
 

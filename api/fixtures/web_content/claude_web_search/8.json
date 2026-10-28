@@ -1,31 +1,31 @@
 {
-  "question": "Fetch https://www.rfc-editor.org/rfc/rfc1149.html with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
-  "response_text": "WebFetch didn't return the full text. Its helper model said it couldn't reproduce the page verbatim and gave a summary instead, so I don't have the verbatim text to give you. I won't reconstruct it from memory, because that wouldn't be a faithful copy of the page.\n\nHere is the summary it returned:\n\n- **What it is:** RFC 1149, \"A Standard for the Transmission of IP Datagrams on Avian Carriers,\" by David Waitzman of BBN, dated 1 April 1990. It's an April Fools memo.\n- **Encoding:** Datagrams are printed in hexadecimal on a small paper scroll. The scroll is wrapped around a bird's leg and secured with duct tape. The recipient scans it back into electronic form.\n- **Performance:** Delay is high and throughput is low. The memo says the \"bandwidth is limited to the leg length.\"\n- **Scalability:** Many carriers can share airspace with little interference, and they have a built-in collision avoidance system.\n- **Reliability:** IP is best-effort, so losing a carrier is tolerable.\n- **Security:** Normal operation is generally safe, but encryption is recommended in tactical environments.\n\nYou can get the exact text in either of these ways:\n- Run `curl -s https://www.rfc-editor.org/rfc/rfc1149.txt` in your terminal. I can run it for you and save the output to a file if you'd like.\n- Open https://www.rfc-editor.org/rfc/rfc1149.html in a browser.",
-  "latency_ms": 16268.990125012351,
-  "response_bytes": 1354,
-  "session_id": "2829d187-0e50-4a70-afa5-9daeea407d88",
+  "question": "Fetch https://example.com/ with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "Here is the text content of https://example.com/ as returned by WebFetch:\n\n```\n\"Example Domain\"\n\n\"This domain is for use in documentation examples without needing permission.\"\n\n\"This is not a service; avoid relying on it for testing and monitoring purposes.\"\n```\n\nWebFetch runs the page through a small model, so this may not match the raw page text exactly. For example, the quotation marks and the omitted \"Learn more\" link text may come from that processing.",
+  "latency_ms": 12139.724417007528,
+  "response_bytes": 461,
+  "session_id": "77f351d0-9777-4e89-bfff-6a1a65c140c2",
   "model": "claude-sonnet-5-5",
-  "total_cost_usd": 0.0190305,
-  "search_ingest_tokens": 440,
+  "total_cost_usd": 0.012311399999999998,
+  "search_ingest_tokens": 134,
   "web_search_calls": 1,
-  "tool_result_text": "I can't reproduce the full page verbatim, but here's a summary.\n\nRFC 1149, \"A Standard for the Transmission of IP Datagrams on Avian Carriers,\" by David Waitzman of BBN, is dated 1 April 1990 and is an April Fools memo. It proposes sending IP datagrams by carrier pigeon:\n\n- **Encoding:** Datagrams are printed in hexadecimal on a small paper scroll wrapped around a bird's leg and secured with duct tape. The recipient scans the paper back into electronic form.\n- **Performance:** Delay is high and throughput is low. As the memo puts it, the \"bandwidth is limited to the leg length.\"\n- **Scalability:** Many carriers can share airspace with little interference, and they have a built-in collision avoidance system.\n- **Reliability:** Because IP is best-effort, losing a carrier is tolerable, and delivery is retried until the carrier drops.\n- **Security:** Normal operation is generally safe, but encryption is recommended in tactical environments.",
+  "tool_result_text": "\"Example Domain\"\n\n\"This domain is for use in documentation examples without needing permission.\"\n\n\"This is not a service; avoid relying on it for testing and monitoring purposes.\"",
   "api_calls": [
     {
-      "input_total": 3486,
+      "input_total": 3469,
       "output_tokens": 24
     },
     {
-      "input_total": 3950,
-      "output_tokens": 5
+      "input_total": 3627,
+      "output_tokens": 143
     }
   ],
   "usage": {
     "input_tokens": 4,
-    "cache_creation_input_tokens": 2571,
-    "cache_read_input_tokens": 4861,
-    "output_tokens": 757,
+    "cache_creation_input_tokens": 2248,
+    "cache_read_input_tokens": 4844,
+    "output_tokens": 242,
     "output_tokens_details": {
-      "thinking_tokens": 141
+      "thinking_tokens": 0
     },
     "server_tool_use": {
       "web_search_requests": 0,
@@ -33,19 +33,19 @@
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 2571,
+      "ephemeral_1h_input_tokens": 2248,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "global",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 640,
-        "cache_read_input_tokens": 3484,
-        "cache_creation_input_tokens": 464,
+        "output_tokens": 143,
+        "cache_read_input_tokens": 3467,
+        "cache_creation_input_tokens": 158,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 464
+          "ephemeral_1h_input_tokens": 158
         },
         "type": "message"
       }

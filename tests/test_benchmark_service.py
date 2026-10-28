@@ -6,6 +6,7 @@ from __future__ import annotations
 from fastapi.testclient import TestClient
 
 from api.main import app
+from api.services.benchmark_inputs import load_web_content_pages
 from api.services.pricing import PRICE_PER_MILLION_TOKENS_USD, price_for_tokens
 from api.services.tokenizer import count_tokens
 
@@ -39,7 +40,7 @@ def test_benchmark_response_shape() -> None:
     body = response.json()
 
     assert body["model"]
-    assert len(body["web_content_rows"]) == 10
+    assert len(body["web_content_rows"]) == len(load_web_content_pages())
 
     for row in body["web_content_rows"]:
         assert row["url"]

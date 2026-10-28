@@ -1,31 +1,39 @@
 {
-  "question": "Fetch https://www.advancingengineering.dev/ with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
-  "response_text": "Here is what WebFetch returned for the page. The tool's fetch model condensed the page, so this may not be the page's exact text.\n\n- **Site title:** Advancing Engineering\n- **Navigation:** Articles, Profile\n- **Name:** Ben Newton\n- **Links:** GitHub, LinkedIn, email\n- **Footer:** \u00a9 2026 Ben Newton, powered by Hugo and the Coder theme\n\nThe page has no article body. It is only a profile and navigation page.",
-  "latency_ms": 9729.990541003644,
-  "response_bytes": 409,
-  "session_id": "18d64aaa-32a6-4cde-87f8-1c7be1c9edda",
+  "question": "Fetch https://www.gnu.org/licenses/gpl-3.0.html with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I couldn't retrieve the GPL-3.0 text. I called WebFetch three times and gnu.org returned HTTP 429 (Too Many Requests) each time, with a `Retry-After: 4` header. Two of those calls were to the URL you gave. The third was to the plain-text version, `https://www.gnu.org/licenses/gpl-3.0.txt`. I retried right away each time, without a real 4-second pause, so the server may still have been throttling me.\n\nI don't want to reproduce the license from memory. You asked for the text verbatim, and a recalled copy of a document this long could have small errors.\n\nYou could ask me to try again in a moment, since the rate limit may have cleared. Or you could get it directly with `curl -O https://www.gnu.org/licenses/gpl-3.0.txt`. If you'd like, I can also try another official mirror, such as the copy on spdx.org or the one in the GitHub licenses repo.",
+  "latency_ms": 11488.434916973347,
+  "response_bytes": 849,
+  "session_id": "2d461568-3ca6-4903-a78b-01177c908f73",
   "model": "claude-sonnet-5-5",
-  "total_cost_usd": 0.0128332,
-  "search_ingest_tokens": 227,
-  "web_search_calls": 1,
-  "tool_result_text": "The page is a profile and navigation page for Ben Newton's site, \"Advancing Engineering.\" It contains no article body. It includes:\n\n- **Site title:** Advancing Engineering\n- **Navigation:** Articles and Profile\n- **Name:** Ben Newton\n- **Links:** GitHub, LinkedIn, and email\n- **Footer:** \u00a9 2026 Ben Newton, powered by Hugo and the Coder theme",
+  "total_cost_usd": 0.019679799999999997,
+  "search_ingest_tokens": 650,
+  "web_search_calls": 3,
+  "tool_result_text": "The server returned HTTP 429 Too Many Requests.\nRetry-After: 4\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.\n\nThe server returned HTTP 429 Too Many Requests.\nRetry-After: 4\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.\n\nThe server returned HTTP 429 Too Many Requests.\nRetry-After: 4\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.",
   "api_calls": [
     {
-      "input_total": 3477,
+      "input_total": 3487,
       "output_tokens": 24
     },
     {
-      "input_total": 3728,
-      "output_tokens": 162
+      "input_total": 3703,
+      "output_tokens": 9
+    },
+    {
+      "input_total": 3977,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 4194,
+      "output_tokens": 308
     }
   ],
   "usage": {
-    "input_tokens": 4,
-    "cache_creation_input_tokens": 2349,
-    "cache_read_input_tokens": 4852,
-    "output_tokens": 266,
+    "input_tokens": 8,
+    "cache_creation_input_tokens": 2815,
+    "cache_read_input_tokens": 12538,
+    "output_tokens": 715,
     "output_tokens_details": {
-      "thinking_tokens": 0
+      "thinking_tokens": 29
     },
     "server_tool_use": {
       "web_search_requests": 0,
@@ -33,19 +41,19 @@
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 2349,
+      "ephemeral_1h_input_tokens": 2815,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "global",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 162,
-        "cache_read_input_tokens": 3475,
-        "cache_creation_input_tokens": 251,
+        "output_tokens": 308,
+        "cache_read_input_tokens": 3975,
+        "cache_creation_input_tokens": 217,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 251
+          "ephemeral_1h_input_tokens": 217
         },
         "type": "message"
       }

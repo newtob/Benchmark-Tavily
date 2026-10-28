@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import * as Table from "$lib/components/ui/table/index.js";
-  import * as Tabs from "$lib/components/ui/tabs/index.js";
-  import { type BenchmarkCell, type BenchmarkResponse, fetchBenchmark } from "$lib/api.js";
+  import * as Table from "#lib/components/ui/table/index.js";
+  import * as Tabs from "#lib/components/ui/tabs/index.js";
+  import { type BenchmarkCell, type BenchmarkResponse, fetchBenchmark } from "#lib/api.js";
 
   // Per this workspace's Svelte convention: anything assigned from an async
   // callback (onMount here) must be $state, not a plain `let` — a plain
