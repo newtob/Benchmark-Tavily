@@ -1,19 +1,25 @@
-# Hand-curated benchmark scenarios for Table 2 (Claude Web Search vs Tavily
-# Extract). Edit this file to add/remove/adjust what the benchmark measures;
-# recorded response fixtures are generated from it via `just record-fixtures`.
-# See specs/tavily-benchmark-app.md §4.
-web_content_pairs:
-  - url: "https://docs.tavily.com/documentation/api-reference/endpoint/extract"
-    question: "What parameters does the Tavily Extract API endpoint accept?"
-    note: >
-      A documentation page with a fairly long, structured answer — a good
-      stress test for response-payload size differences between methods.
-  - url: "https://svelte.dev/docs/kit/adapter-static"
-    question: "What does the SvelteKit adapter-static package do?"
-    note: >
-      A shorter, more focused reference page.
-  - url: "https://opentelemetry.io/docs/collector/install/docker/"
-    question: "How do you run the OpenTelemetry Collector with Docker?"
-    note: >
-      A how-to/tutorial-style page, distinct in shape from the two reference
-      pages above.
+# Hand-curated page-load scenarios for the benchmark: every method loads the
+# same URL and we compare the tokens it hands the model. Pages are chosen to
+# be static enough to give (near) identical content on every run, and to span
+# sizes and shapes. Edit this file to add/remove pages; recorded fixtures are
+# generated from it via `just record-fixtures` (keyed positionally).
+# See specs/tavily-benchmark-app.md §4 and §17.
+web_content_pages:
+  - url: "https://en.wikipedia.org/wiki/YouTube"
+    note: Very long popular Wikipedia article.
+  - url: "https://en.wikipedia.org/wiki/Wikipedia"
+    note: Very long popular Wikipedia article (heavy tables and references).
+  - url: "https://en.wikipedia.org/wiki/Elizabeth_II"
+    note: Very long biography article.
+  - url: "https://letsencrypt.org/"
+    note: Short, mostly static marketing homepage.
+  - url: "https://albertsemple.com/"
+    note: Tiny personal poetry site.
+  - url: "https://www.advancingengineering.dev/"
+    note: Small site that renders client-side; tests JavaScript rendering.
+  - url: "https://www.gnu.org/licenses/gpl-3.0.html"
+    note: Long, legally frozen plain-document page; stable for decades.
+  - url: "https://www.rfc-editor.org/rfc/rfc1149.html"
+    note: Short, immutable RFC (IP over avian carriers).
+  - url: "https://example.com/"
+    note: Minimal IANA reserved page; the floor/baseline for page overhead.

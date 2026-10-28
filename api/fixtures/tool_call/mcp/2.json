@@ -1,7 +1,0 @@
-{
-  "_placeholder_note": "Hand-authored placeholder, not a real Tavily MCP response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
-  "query": "what does the Tavily extract API endpoint return",
-  "response_text": "Title: Tavily Extract - Tavily Docs\nURL: https://docs.tavily.com/documentation/api-reference/endpoint/extract\nContent: The Extract endpoint returns cleaned page content for one or more URLs, including raw_content (markdown or text), optional images, and per-result metadata such as title and response time.",
-  "latency_ms": 870.0,
-  "response_bytes": 250
-}

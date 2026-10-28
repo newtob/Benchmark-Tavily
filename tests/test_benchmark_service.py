@@ -39,22 +39,11 @@ def test_benchmark_response_shape() -> None:
     body = response.json()
 
     assert body["model"]
-    assert len(body["tool_call_rows"]) == 3
-    assert len(body["web_content_rows"]) == 3
-
-    for row in body["tool_call_rows"]:
-        assert row["query"]
-        for cell_key in ("raw_tool_call", "mcp"):
-            cell = row[cell_key]
-            assert cell["tokens"] > 0
-            assert cell["price_usd"] >= 0
-            assert cell["latency_ms"] >= 0
-            assert cell["response_bytes"] > 0
+    assert len(body["web_content_rows"]) == 10
 
     for row in body["web_content_rows"]:
         assert row["url"]
-        assert row["question"]
-        for cell_key in ("claude_web_search", "tavily_extract"):
+        for cell_key in ("claude_web_search", "tavily_extract", "tinyfish_fetch"):
             cell = row[cell_key]
             assert cell["tokens"] > 0
             assert cell["price_usd"] >= 0

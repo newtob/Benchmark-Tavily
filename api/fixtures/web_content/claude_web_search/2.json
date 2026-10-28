@@ -1,10 +1,56 @@
 {
-  "_placeholder_note": "Hand-authored placeholder, not a real Claude Code CLI response. Run `just record-fixtures` (needs the Claude Code CLI logged in) to replace with real recorded data.",
-  "question": "How do you run the OpenTelemetry Collector with Docker?",
-  "response_text": "Run `docker run -p 4317:4317 -p 4318:4318 -v $(pwd)/config.yaml:/etc/otelcol/config.yaml otel/opentelemetry-collector`, mounting your collector config into the container. Use the `-contrib` image variant instead of the core one if your pipeline needs a receiver or exporter — such as the file exporter — that ships only in the contrib distribution.",
-  "latency_ms": 4500.0,
-  "response_bytes": 340,
-  "session_id": "placeholder-session-2",
-  "model": "claude-sonnet-5",
-  "total_cost_usd": 0.0163
+  "question": "Fetch https://en.wikipedia.org/wiki/Elizabeth_II with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I couldn't get the full verbatim text. WebFetch doesn't return raw page content. It runs the page through a small model, which declined to reproduce the article and gave a short summary instead.\n\n- **Coverage:** The page is about 254,000 characters long. The fetch only covered the first 100,000, so the rest wasn't read.\n- **Summary only:** The result was a summary, not a transcript. It covered her life from 1926 to 2022, her 1952\u20132022 reign, her marriage to Philip, her four children, and her succession by Charles III. I'm not passing that off as the page text.\n- **More fetches:** I could call WebFetch again with `offset: 100000` and so on, but I'd expect more summaries, so I haven't.\n\nTwo ways to get the exact text:\n- **Wikipedia API:** run `curl \"https://en.wikipedia.org/w/index.php?title=Elizabeth_II&action=raw\" -o elizabeth_ii.wikitext` to save the raw wikitext. The plain-text extract is at `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Elizabeth_II&format=json`.\n- **Saved to a file:** I can run either command and save the output into a new, empty directory, if you want that.",
+  "latency_ms": 16655.61504100333,
+  "response_bytes": 1134,
+  "session_id": "eda783b7-6db8-49f8-a81a-007a1e8cdf6b",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0241239,
+  "search_ingest_tokens": 724,
+  "web_search_calls": 1,
+  "tool_result_text": "I can't reproduce the full page verbatim. It's also cut off partway through the article, so I couldn't return all of it anyway. Here is a concise summary of the content provided:\n\n**Elizabeth II** (21 April 1926 \u2013 8 September 2022) was Queen of the United Kingdom and other Commonwealth realms from 6 February 1952 until her death at Balmoral Castle in Scotland, aged 96.\n\n- **Background:** Born in Mayfair, London, she was the first child of the Duke and Duchess of York, later George VI and Queen Elizabeth the Queen Mother. Her father's accession in 1936 made her heir presumptive.\n- **Wartime service:** She undertook public duties during the Second World War and served in the Auxiliary Territorial Service.\n- **Marriage and family:** In 1947 she married Philip Mountbatten, who died in 2021. They had four children: Charles, Anne, Andrew, and Edward.\n- **Reign:** She succeeded her father in 1952 and was crowned in 1953. Her reign of about 70 years was the longest of any British monarch. She served as a constitutional monarch through decolonisation, the Troubles, devolution, UK accession to the European Communities, and Brexit.\n- **Notable events:** She met more than 170 prime ministers, five popes, and fourteen U.S. presidents. She marked Silver, Golden, Diamond, and Platinum jubilees. The page also notes criticism of her family during periods such as 1992's \"annus horribilis\" and after Diana's death in 1997, though public support for the monarchy stayed high.\n- **Succession:** She was succeeded by her eldest son, Charles III.\n\n[WebFetch note: this page's text is 254397 characters long and the answer above covers only characters 0 to 100000; the final 154397 were not read \u2014 to read on, call WebFetch again with the same url and offset: 100000.]",
+  "api_calls": [
+    {
+      "input_total": 3486,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 4234,
+      "output_tokens": 2
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2855,
+    "cache_read_input_tokens": 4861,
+    "output_tokens": 636,
+    "output_tokens_details": {
+      "thinking_tokens": 94
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2855,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 519,
+        "cache_read_input_tokens": 3484,
+        "cache_creation_input_tokens": 748,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 748
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
 }

@@ -1,0 +1,56 @@
+{
+  "question": "Fetch https://example.com/ with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "Here is the text content of https://example.com/ as returned by WebFetch:\n\n```\n\"Example Domain\"\n\n\"This domain is for use in documentation examples without needing permission.\"\n\n\"This is not a service; avoid relying on it for testing and monitoring purposes.\"\n```\n\nWebFetch runs the page through a small model, so this may not match the raw page text exactly. For example, the quotation marks and the omitted \"Learn more\" link text may come from that processing.",
+  "latency_ms": 12139.724417007528,
+  "response_bytes": 461,
+  "session_id": "77f351d0-9777-4e89-bfff-6a1a65c140c2",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.012311399999999998,
+  "search_ingest_tokens": 134,
+  "web_search_calls": 1,
+  "tool_result_text": "\"Example Domain\"\n\n\"This domain is for use in documentation examples without needing permission.\"\n\n\"This is not a service; avoid relying on it for testing and monitoring purposes.\"",
+  "api_calls": [
+    {
+      "input_total": 3469,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 3627,
+      "output_tokens": 143
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2248,
+    "cache_read_input_tokens": 4844,
+    "output_tokens": 242,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2248,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 143,
+        "cache_read_input_tokens": 3467,
+        "cache_creation_input_tokens": 158,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 158
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "question": "Fetch https://www.advancingengineering.dev/ with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "Here is what WebFetch returned for the page. The tool's fetch model condensed the page, so this may not be the page's exact text.\n\n- **Site title:** Advancing Engineering\n- **Navigation:** Articles, Profile\n- **Name:** Ben Newton\n- **Links:** GitHub, LinkedIn, email\n- **Footer:** \u00a9 2026 Ben Newton, powered by Hugo and the Coder theme\n\nThe page has no article body. It is only a profile and navigation page.",
+  "latency_ms": 9729.990541003644,
+  "response_bytes": 409,
+  "session_id": "18d64aaa-32a6-4cde-87f8-1c7be1c9edda",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0128332,
+  "search_ingest_tokens": 227,
+  "web_search_calls": 1,
+  "tool_result_text": "The page is a profile and navigation page for Ben Newton's site, \"Advancing Engineering.\" It contains no article body. It includes:\n\n- **Site title:** Advancing Engineering\n- **Navigation:** Articles and Profile\n- **Name:** Ben Newton\n- **Links:** GitHub, LinkedIn, and email\n- **Footer:** \u00a9 2026 Ben Newton, powered by Hugo and the Coder theme",
+  "api_calls": [
+    {
+      "input_total": 3477,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 3728,
+      "output_tokens": 162
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2349,
+    "cache_read_input_tokens": 4852,
+    "output_tokens": 266,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2349,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 162,
+        "cache_read_input_tokens": 3475,
+        "cache_creation_input_tokens": 251,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 251
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
+}

@@ -2,7 +2,7 @@
 name = "tavily-benchmark"
 version = "0.1.0"
 description = "OpenTelemetry tooling for per-prompt Claude Code cost tracking, plus Tavily benchmark tooling."
-requires-python = ">=3.12"
+requires-python = ">=3.15"
 dependencies = [
     "fastapi==0.141.1",
     "uvicorn[standard]==0.52.4",
@@ -24,14 +24,14 @@ dev = [
 ]
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py315"
 line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.15"
 strict = true
 ignore_missing_imports = true
 

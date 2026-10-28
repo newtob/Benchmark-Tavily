@@ -140,8 +140,10 @@ composition root, `response_model` declared on every route.
 
   class ToolCallRow(BaseModel):
       query: str
-      raw_tool_call: BenchmarkCell
-      mcp: BenchmarkCell
+      tavily_rest: BenchmarkCell
+      tavily_mcp: BenchmarkCell
+      tinyfish_cli: BenchmarkCell
+      tinyfish_mcp: BenchmarkCell
 
 
   class WebContentRow(BaseModel):
@@ -166,7 +168,7 @@ pairs — live in two hand-curated **YAML** files, loaded by
 
 ```yaml
 # api/fixtures/tool_call/inputs.yaml
-# Hand-curated benchmark scenarios for Table 1 (Raw tool call vs MCP).
+# Hand-curated benchmark scenarios for Table 1 (Tavily REST/MCP vs TinyFish CLI/MCP).
 # Edit this file to add/remove/adjust what the benchmark measures;
 # recorded response fixtures are generated from it via `just record-fixtures`.
 tool_call_queries:
@@ -302,8 +304,8 @@ generated) unblock the rest of the pipeline (tests, Docker, Playwright).
 - One route (`src/routes/+page.svelte`): on mount, fetch `/api/benchmark`
   through a small typed client (`src/lib/api.ts`), then render **two**
   shadcn-svelte `Table` components:
-  - **Table 1** — Query | Raw tool call | MCP.
-  - **Table 2** — URL / Question | Claude Web Search | Tavily Extract.
+  - **Table 1** — Query | Tavily REST | Tavily MCP | TinyFish CLI | TinyFish MCP.
+  - **Table 2** — URL / Question | Claude Web Search | Tavily Extract | TinyFish Fetch.
 
   Each method-column cell shows tokens and price (latency as secondary /
   tooltip value). Loading, empty, and error states per the UI Behavior
@@ -312,9 +314,9 @@ generated) unblock the rest of the pipeline (tests, Docker, Playwright).
 - Stable `data-testid`s, distinct per table so Playwright can address each
   independently:
   - Table 1: `data-testid="tool-call-table"`, headers
-    `data-testid="col-raw"` / `data-testid="col-mcp"`.
+    `col-tavily-rest` / `col-tavily-mcp` / `col-tinyfish-cli` / `col-tinyfish-mcp`.
   - Table 2: `data-testid="web-content-table"`, headers
-    `data-testid="col-claude-search"` / `data-testid="col-tavily-extract"`.
+    `col-claude-search` / `col-tavily-extract` / `col-tinyfish-fetch`.
   - Plus a per-row testid on both tables.
 - Built as static output (`apps/ui/build/` via adapter-static) and copied
   into the final Docker stage for nginx to serve.
@@ -673,3 +675,30 @@ became available.
   import (it should auto-detect from `Dockerfile.vercel`'s presence); if
   the dashboard shows anything else, override it manually before the
   first deploy.
+
+## 17. TinyFish and the page-load re-focus (supersedes the search tables)
+
+The benchmark now answers "which is the most token-efficient way of loading a
+web page into a model?" as a three-way comparison of **page loads**: Claude
+Code's WebFetch, Tavily Extract and TinyFish Fetch. The earlier search tables
+(Tavily REST/MCP, TinyFish CLI/MCP) were dropped: search engines return
+different pages and result counts, so their payloads cannot be made identical
+across tools, whereas loading the same URL can.
+
+- **Pages** (`api/fixtures/web_content/inputs.yaml`): 10 pages chosen to be
+  static enough to repeat — three long Wikipedia articles, a fixed BBC
+  article, letsencrypt.org, two small personal sites (one client-rendered),
+  the GPL-3.0 text, RFC 1149 and example.com.
+- **Methods**: `tavily_extract` (REST, markdown, basic depth);
+  `tinyfish_fetch` (`tinyfish fetch content get <url> --format markdown`, CLI);
+  `claude_web_search` (field name kept for fixture compatibility) is Claude
+  Code headless with only the WebFetch tool; its tokens are the measured
+  model-side ingestion of the tool result.
+- **Recording**: `just record-fixtures` (`--tavily-only`, `--tinyfish-only`,
+  `--claude-only` select a leg). The served app only replays fixtures.
+- **Caveats**: (1) Claude's WebFetch summarises the page with a small model,
+  so its token count is a summary, not the page; (2) some hosts are blocked
+  (bbc.co.uk) — that fixture records the refusal and is an expected failure in
+  the validity test; (3) a tool that fails or returns near-empty content scores
+  few tokens, so the "most efficient" flag is not quality-adjusted; (4) TinyFish
+  fetch may serve cached content (the CLI exposes no `ttl`).

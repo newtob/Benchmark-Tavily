@@ -36,6 +36,14 @@
     return { tokens, price_usd };
   }
 
+  // Cheapest method: the one with the fewest average tokens — the
+  // benchmark's headline question.
+  type Method = { id: string; label: string; avg: { tokens: number; price_usd: number } };
+
+  function mostEfficient(methods: Method[]): string {
+    return methods.reduce((best, m) => (m.avg.tokens < best.avg.tokens ? m : best)).id;
+  }
+
   // Detail view: the real, unscaled per-search figures.
   function formatCell(tokens: number, priceUsd: number): string {
     return `${tokens} tok · $${priceUsd.toFixed(6)}`;
@@ -50,15 +58,17 @@
 </script>
 
 <main class="mx-auto max-w-5xl p-8">
-  <h1 class="text-2xl font-semibold">Tavily Benchmark</h1>
+  <h1 class="text-2xl font-semibold">Web Page Load Token-Efficiency Benchmark</h1>
   <p class="mt-1 text-sm text-muted-foreground">
-    Estimates the LLM token cost and price of running each method
-    <strong>1000 searches</strong> — a single real search's result, averaged
-    and scaled ×1000 for a more legible number (not 1000 actual API/tool
-    calls). See specs/tavily-benchmark-app.md for methodology and its
-    approximation caveats (tiktoken, not Anthropic's exact tokenizer; a
-    fixed reference model's per-token rate, not each provider's own
-    pricing).
+    Which is the most token-efficient way to load a web page into a model:
+    Claude's WebFetch, Tavily Extract or TinyFish Fetch? Every method loads
+    the same {data ? data.web_content_rows.length : 10} static pages; the
+    Summary estimates the LLM token cost and price of loading
+    <strong>1000 pages</strong> — the average of the recorded loads, scaled
+    ×1000 for a more legible number (not 1000 actual calls). See
+    specs/tavily-benchmark-app.md for methodology and its approximation
+    caveats (tiktoken, not Anthropic's exact tokenizer; a fixed reference
+    model's per-token rate, not each provider's own pricing).
   </p>
 
   {#if loading}
@@ -69,81 +79,38 @@
     <Tabs.Root bind:value={activeTab} class="mt-8">
       <Tabs.List>
         <Tabs.Trigger value="summary" data-testid="tab-summary">Summary</Tabs.Trigger>
-        <Tabs.Trigger value="searches" data-testid="tab-searches">Searches</Tabs.Trigger>
+        <Tabs.Trigger value="searches" data-testid="tab-searches">Pages</Tabs.Trigger>
       </Tabs.List>
 
       <Tabs.Content value="summary" data-testid="summary-panel">
-        {@const toolCallRaw = average(data.tool_call_rows.map((r) => r.raw_tool_call))}
-        {@const toolCallMcp = average(data.tool_call_rows.map((r) => r.mcp))}
-        {@const webClaude = average(data.web_content_rows.map((r) => r.claude_web_search))}
-        {@const webExtract = average(data.web_content_rows.map((r) => r.tavily_extract))}
+        {@const methods = [
+          { id: "claude-search", label: "Claude WebFetch", avg: average(data.web_content_rows.map((r) => r.claude_web_search)) },
+          { id: "tavily-extract", label: "Tavily Extract", avg: average(data.web_content_rows.map((r) => r.tavily_extract)) },
+          { id: "tinyfish-fetch", label: "TinyFish Fetch", avg: average(data.web_content_rows.map((r) => r.tinyfish_fetch)) },
+        ]}
+        {@const best = mostEfficient(methods)}
 
         <section>
-          <h2 class="text-lg font-medium">Tavily: Raw tool call vs MCP</h2>
+          <h2 class="text-lg font-medium">Page load: Claude vs Tavily vs TinyFish</h2>
           <p class="text-xs text-muted-foreground">
-            Average across {data.tool_call_rows.length} searches, ×{DISPLAY_SCALE}.
+            Average across {data.web_content_rows.length} pages, ×{DISPLAY_SCALE}.
           </p>
-          <div class="mt-3 grid grid-cols-2 gap-4">
-            <div class="rounded-lg border p-4" data-testid="summary-raw-tool-call">
-              <div class="text-sm text-muted-foreground">Raw tool call</div>
-              <div class="mt-1 text-xl font-semibold">{formatScaledAverage(toolCallRaw)}</div>
-            </div>
-            <div class="rounded-lg border p-4" data-testid="summary-mcp">
-              <div class="text-sm text-muted-foreground">MCP</div>
-              <div class="mt-1 text-xl font-semibold">{formatScaledAverage(toolCallMcp)}</div>
-            </div>
-          </div>
-        </section>
-
-        <section class="mt-8">
-          <h2 class="text-lg font-medium">Web content: Claude Web Search vs Tavily Extract</h2>
-          <p class="text-xs text-muted-foreground">
-            Average across {data.web_content_rows.length} searches, ×{DISPLAY_SCALE}.
-          </p>
-          <div class="mt-3 grid grid-cols-2 gap-4">
-            <div class="rounded-lg border p-4" data-testid="summary-claude-search">
-              <div class="text-sm text-muted-foreground">Claude Web Search</div>
-              <div class="mt-1 text-xl font-semibold">{formatScaledAverage(webClaude)}</div>
-            </div>
-            <div class="rounded-lg border p-4" data-testid="summary-tavily-extract">
-              <div class="text-sm text-muted-foreground">Tavily Extract</div>
-              <div class="mt-1 text-xl font-semibold">{formatScaledAverage(webExtract)}</div>
-            </div>
+          <div class="mt-3 grid grid-cols-3 gap-4">
+            {#each methods as m (m.id)}
+              <div class="rounded-lg border p-4" data-testid={`summary-${m.id}`}>
+                <div class="text-sm text-muted-foreground">
+                  {m.label}{#if m.id === best} <span data-testid="most-efficient">· most efficient</span>{/if}
+                </div>
+                <div class="mt-1 text-xl font-semibold">{formatScaledAverage(m.avg)}</div>
+              </div>
+            {/each}
           </div>
         </section>
       </Tabs.Content>
 
       <Tabs.Content value="searches" data-testid="searches-panel">
         <section>
-          <h2 class="text-lg font-medium">Tavily: Raw tool call vs MCP</h2>
-          {#if data.tool_call_rows.length === 0}
-            <p class="mt-2 text-sm text-muted-foreground" data-testid="tool-call-empty">
-              No data.
-            </p>
-          {:else}
-            <Table.Root data-testid="tool-call-table">
-              <Table.Header>
-                <Table.Row>
-                  <Table.Head>Query</Table.Head>
-                  <Table.Head data-testid="col-raw">Raw tool call</Table.Head>
-                  <Table.Head data-testid="col-mcp">MCP</Table.Head>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {#each data.tool_call_rows as row (row.query)}
-                  <Table.Row data-testid="tool-call-row">
-                    <Table.Cell>{row.query}</Table.Cell>
-                    <Table.Cell>{formatCell(row.raw_tool_call.tokens, row.raw_tool_call.price_usd)}</Table.Cell>
-                    <Table.Cell>{formatCell(row.mcp.tokens, row.mcp.price_usd)}</Table.Cell>
-                  </Table.Row>
-                {/each}
-              </Table.Body>
-            </Table.Root>
-          {/if}
-        </section>
-
-        <section class="mt-10">
-          <h2 class="text-lg font-medium">Web content: Claude Web Search vs Tavily Extract</h2>
+          <h2 class="text-lg font-medium">Page load: Claude vs Tavily vs TinyFish</h2>
           {#if data.web_content_rows.length === 0}
             <p class="mt-2 text-sm text-muted-foreground" data-testid="web-content-empty">
               No data.
@@ -152,23 +119,24 @@
             <Table.Root data-testid="web-content-table">
               <Table.Header>
                 <Table.Row>
-                  <Table.Head>URL / Question</Table.Head>
-                  <Table.Head data-testid="col-claude-search">Claude Web Search</Table.Head>
+                  <Table.Head>URL</Table.Head>
+                  <Table.Head data-testid="col-claude-search">Claude WebFetch</Table.Head>
                   <Table.Head data-testid="col-tavily-extract">Tavily Extract</Table.Head>
+                  <Table.Head data-testid="col-tinyfish-fetch">TinyFish Fetch</Table.Head>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
                 {#each data.web_content_rows as row (row.url)}
                   <Table.Row data-testid="web-content-row">
+                    <Table.Cell class="break-all">{row.url}</Table.Cell>
                     <Table.Cell>
-                      <div class="font-medium">{row.question}</div>
-                      <div class="text-xs text-muted-foreground">{row.url}</div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      {formatCell(row.claude_web_search.tokens, row.claude_web_search.price_usd)}
+                      {formatCell(row.claude_web_search.tokens, row.claude_web_search.price_usd)}{row.claude_web_search.tokens_source === 'claude_usage_measured' ? ' (measured)' : ' (est.)'}
                     </Table.Cell>
                     <Table.Cell>
                       {formatCell(row.tavily_extract.tokens, row.tavily_extract.price_usd)}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {formatCell(row.tinyfish_fetch.tokens, row.tinyfish_fetch.price_usd)}
                     </Table.Cell>
                   </Table.Row>
                 {/each}

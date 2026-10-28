@@ -2,8 +2,8 @@
 
 TypeScript and Python components, source-controlled on GitHub. Holds:
 
-- The **Tavily Benchmark app** — two cost-comparison tables rendered as a
-  small full-stack app (see below).
+- The **Tavily Benchmark app** — page-load cost comparison (Claude vs
+  Tavily vs TinyFish) rendered as a small full-stack app (see below).
 - OpenTelemetry tooling for capturing Claude Code's own per-prompt token
   usage/cost, plus a prompt journal correlating that cost with the actual
   prompt text.
@@ -33,14 +33,9 @@ Claude pricing:
 
 ## The Tavily Benchmark app
 
-Two independent tables, each comparing tokens/price for a different pair
-of methods:
-
-1. **Tavily: Raw tool call vs MCP** — the same search query, called
-   directly against Tavily's REST API vs through its hosted MCP server.
-2. **Web content: Claude Web Search vs Tavily Extract** — the same
-   underlying question, answered via Claude's own web search tool vs by
-   extracting a specific page with Tavily's Extract API.
+A single page-load comparison: the same 10 static URLs loaded with Claude
+Code's WebFetch, Tavily Extract and TinyFish Fetch, comparing tokens/price
+(see the spec §17 for the page list and caveats).
 
 Full design: [`specs/tavily-benchmark-app.md`](specs/tavily-benchmark-app.md).
 
@@ -62,13 +57,15 @@ just e2e-full                   # build + run + Playwright + tear down
 ### Regenerating fixtures
 
 ```bash
-TAVILY_API_KEY=... just record-fixtures
+TAVILY_API_KEY=... TINYFISH_API_KEY=... just record-fixtures
 ```
 
-Needs `TAVILY_API_KEY` (Tavily's raw/MCP/extract calls) and the Claude
+Needs `TAVILY_API_KEY` (Tavily's REST/MCP/extract calls), `TINYFISH_API_KEY`
+plus the `tinyfish` CLI on PATH (TinyFish's CLI/MCP/fetch calls; `--tinyfish-only`
+records just those) and the Claude
 Code CLI installed and logged in (`claude /login`, no API key — this org
 doesn't issue `ANTHROPIC_API_KEY`) for the Claude Web Search leg. Edit
-`api/fixtures/tool_call/inputs.yaml` / `api/fixtures/web_content/inputs.yaml`
+`api/fixtures/web_content/inputs.yaml`
 first to change what gets benchmarked.
 
 ### Deploying to Vercel

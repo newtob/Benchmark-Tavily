@@ -1,7 +1,0 @@
-{
-  "_placeholder_note": "Hand-authored placeholder, not a real Tavily response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
-  "query": "what is the current stable version of the Svelte compiler",
-  "response_text": "{\"query\": \"what is the current stable version of the Svelte compiler\", \"answer\": null, \"results\": [{\"title\": \"svelte - npm\", \"url\": \"https://www.npmjs.com/package/svelte\", \"content\": \"The current stable version of svelte is 5.57.0, part of the Svelte 5 release line which introduced runes.\", \"score\": 0.91}], \"images\": [], \"response_time\": 0.98}",
-  "latency_ms": 780.0,
-  "response_bytes": 340
-}

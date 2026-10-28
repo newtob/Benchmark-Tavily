@@ -10,24 +10,18 @@ export type BenchmarkCell = {
   price_usd: number;
   latency_ms: number;
   response_bytes: number;
-};
-
-export type ToolCallRow = {
-  query: string;
-  raw_tool_call: BenchmarkCell;
-  mcp: BenchmarkCell;
+  tokens_source: string;
 };
 
 export type WebContentRow = {
   url: string;
-  question: string;
   claude_web_search: BenchmarkCell;
   tavily_extract: BenchmarkCell;
+  tinyfish_fetch: BenchmarkCell;
 };
 
 export type BenchmarkResponse = {
   model: string;
-  tool_call_rows: ToolCallRow[];
   web_content_rows: WebContentRow[];
   generated_at: string;
 };

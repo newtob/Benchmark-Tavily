@@ -11,9 +11,9 @@ class BenchmarkCell(BaseModel):
     """One method's result for one benchmark row.
 
     `tokens`/`price_usd` are the primary, apples-to-apples metrics (see
-    specs/tavily-benchmark-app.md §6) — a tiktoken estimate of this cell's
-    response payload, priced at a fixed reference-model rate, identical
-    across all four columns in both tables. `latency_ms`/`response_bytes`
+    specs/tavily-benchmark-app.md §6) — a token count for this cell's
+    response payload (see `tokens_source`), priced at a fixed
+    reference-model rate. `latency_ms`/`response_bytes`
     are secondary/informational and are NOT apples-to-apples across every
     column pair (see the §6 latency caveat for Table 2).
     """
@@ -22,27 +22,22 @@ class BenchmarkCell(BaseModel):
     price_usd: float
     latency_ms: float
     response_bytes: int
-
-
-class ToolCallRow(BaseModel):
-    """Table 1: Tavily raw tool call vs MCP, for one query."""
-
-    query: str
-    raw_tool_call: BenchmarkCell
-    mcp: BenchmarkCell
+    # How `tokens` was obtained: "tiktoken_estimate" (o200k_base over the
+    # recorded payload) or "claude_usage_measured" (the model's own usage
+    # deltas for ingesting the WebSearch tool result — Claude column only).
+    tokens_source: str = "tiktoken_estimate"
 
 
 class WebContentRow(BaseModel):
-    """Table 2: Claude Web Search vs Tavily Extract, for one URL+question pair."""
+    """One page load: Claude vs Tavily Extract vs TinyFish Fetch, for one URL."""
 
     url: str
-    question: str
     claude_web_search: BenchmarkCell
     tavily_extract: BenchmarkCell
+    tinyfish_fetch: BenchmarkCell
 
 
 class BenchmarkResponse(BaseModel):
     model: str
-    tool_call_rows: list[ToolCallRow]
     web_content_rows: list[WebContentRow]
     generated_at: datetime

@@ -1,0 +1,6 @@
+{
+  "url": "https://www.advancingengineering.dev/",
+  "response_text": "{\"results\": [], \"failed_results\": [{\"url\": \"https://www.advancingengineering.dev/\", \"error\": \"Failed to fetch url\"}], \"response_time\": 0.57, \"request_id\": \"ac76ae2d-eb76-4303-ab1f-76f2f16a7248\"}",
+  "latency_ms": 1058.300083008362,
+  "response_bytes": 194
+}

@@ -1,10 +1,56 @@
 {
-  "_placeholder_note": "Hand-authored placeholder, not a real Claude Code CLI response. Run `just record-fixtures` (needs the Claude Code CLI logged in) to replace with real recorded data.",
-  "question": "What does the SvelteKit adapter-static package do?",
-  "response_text": "`@sveltejs/adapter-static` prerenders a SvelteKit app into plain static HTML/CSS/JS files, so it can be served by any static file host or reverse proxy without a Node.js runtime — a common choice when a separate backend already serves the app's API.",
-  "latency_ms": 3800.0,
-  "response_bytes": 270,
-  "session_id": "placeholder-session-1",
-  "model": "claude-sonnet-5",
-  "total_cost_usd": 0.0121
+  "question": "Fetch https://en.wikipedia.org/wiki/Wikipedia with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I couldn't get the verbatim text. WebFetch doesn't return raw page content. It runs the page through a small model, which gave me a short summary instead of the text. It also only read the first 100,000 of the page's 278,004 characters.\n\nThe summary it returned said:\n- Wikipedia is a free online encyclopedia, written and maintained by volunteer editors on MediaWiki. Jimmy Wales and Larry Sanger founded it in 2001, and the Wikimedia Foundation has hosted it since 2003.\n- It exists in over 300 languages, and the English edition has over 7 million articles.\n- It has been criticized for systemic bias, including gender and geographic bias. Views of its reliability have improved since the late 2010s.\n- Page protection, administrators, dispute resolution and an Arbitration Committee handle conflicts and vandalism.\n- The Wikimedia Foundation reported that human page views fell about 8% in October 2025 compared with October 2024. It attributed this partly to generative AI and social media.\n\nTreat this as a paraphrase, not the page text.\n\nTo get the exact text, you could:\n- Download the raw wikitext from `https://en.wikipedia.org/w/index.php?title=Wikipedia&action=raw`, for example with `curl`.\n- Get plain text from the API at `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Wikipedia&format=json`.\n\nIf you'd like, I can run one of these with `curl` once I have shell access. I can also keep paging through WebFetch with `offset`, but each page would still come back summarized.",
+  "latency_ms": 15190.661291009746,
+  "response_bytes": 1524,
+  "session_id": "89b7976c-9494-496d-b423-35a3162b9960",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0250595,
+  "search_ingest_tokens": 582,
+  "web_search_calls": 1,
+  "tool_result_text": "I can't reproduce the full page verbatim. Your instructions also ask for a concise response, and the page text is cut off partway through anyway. Here is a brief overview based on the content provided:\n\n- **What it is:** Wikipedia is a free online encyclopedia written and maintained by volunteer editors using the MediaWiki wiki software. It was founded in 2001 by Jimmy Wales and Larry Sanger and has been hosted by the Wikimedia Foundation since 2003.\n- **Scale:** It has grown to over 300 languages, and the English edition has over 7 million articles. The page calls it \"the largest and most read reference work in history.\"\n- **Reception:** It has been criticized for systemic biases, including gender and geographic bias, and its reliability was often questioned in the 2000s. Praise for its reliability has grown since the late 2010s.\n- **Editing and governance:** Editing restrictions and page protection are used on contentious or vandalism-prone articles. Administrators, dispute resolution processes, and an Arbitration Committee handle conflicts.\n- **Recent trends:** The Wikimedia Foundation reported that human page views fell about 8% in October 2025 compared with the same month in 2024. It attributed this partly to generative AI and social media being used to find information.\n\n[WebFetch note: this page's text is 278004 characters long and the answer above covers only characters 0 to 100000; the final 178004 were not read \u2014 to read on, call WebFetch again with the same url and offset: 100000.]",
+  "api_calls": [
+    {
+      "input_total": 3486,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 4092,
+      "output_tokens": 8
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2713,
+    "cache_read_input_tokens": 4861,
+    "output_tokens": 802,
+    "output_tokens_details": {
+      "thinking_tokens": 155
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2713,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 691,
+        "cache_read_input_tokens": 3484,
+        "cache_creation_input_tokens": 606,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 606
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
 }

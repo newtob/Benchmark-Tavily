@@ -1,0 +1,56 @@
+{
+  "question": "Fetch https://albertsemple.com/ with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I couldn't get the verbatim text. The WebFetch tool passes the page through a small model, and that model declined to reproduce the page. It said verbatim output would exceed a 125-character limit on quoted material. It returned only this overview, which isn't the full text:\n\n- **Site:** \"Albert Semple, Bad Poetry,\" a personal poetry website.\n- **Latest blog post:** \"The Farage Riots,\" a poem about far-right protesters' actions, dated 8 August 2024.\n- **Poetry collections:** Works grouped by theme, such as light verse, dark verse, Burns-inspired and Canterbury Tales-inspired.\n- **Poetry A-Z:** An alphabetical index of the works.\n- **Rhyming Dictionary:** A tool for finding rhymes for final-stressed words, limited to rhymes valid in the Scottish pronunciation of English.\n- **About:** Information about the author.\n- **Links:** Reddit, Twitter and Mastodon profiles.\n\nTo get the exact text, you could run `curl -s https://albertsemple.com/` in a terminal. I can do that for you if you'd like, but it would give you raw HTML rather than clean text.",
+  "latency_ms": 13724.65324998484,
+  "response_bytes": 1056,
+  "session_id": "d30d7689-2cc5-4091-bb79-0b4457b24769",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0164286,
+  "search_ingest_tokens": 388,
+  "web_search_calls": 1,
+  "tool_result_text": "I can't return the full page verbatim, since that would exceed the 125-character limit on quoted material. Here's a concise overview instead:\n\n**Albert Semple, Bad Poetry** is a personal poetry website with these sections:\n\n- **Latest blog post:** \"The Farage Riots,\" a poem about far-right protesters' actions, published 8 August 2024.\n- **Poetry collections:** Complete works of \"bad poetry\" grouped by theme, such as light verse, dark verse, Burns-inspired, and Canterbury Tales-inspired.\n- **Poetry A-Z:** An alphabetical index of the works.\n- **Rhyming Dictionary:** A tool that finds rhymes for final-stressed words, limited to rhymes valid in the Scottish pronunciation of English.\n- **About:** Information about the author, Albert Semple.\n- **Links:** Reddit, Twitter, and Mastodon profiles for the author.",
+  "api_calls": [
+    {
+      "input_total": 3473,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 3885,
+      "output_tokens": 3
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2506,
+    "cache_read_input_tokens": 4848,
+    "output_tokens": 555,
+    "output_tokens_details": {
+      "thinking_tokens": 63
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2506,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 455,
+        "cache_read_input_tokens": 3471,
+        "cache_creation_input_tokens": 412,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 412
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
+}

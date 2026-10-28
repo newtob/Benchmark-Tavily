@@ -1,4 +1,7 @@
 set shell := ["bash", "-uc"]
+# Load .env (gitignored) into every recipe's environment, e.g. TAVILY_API_KEY
+# for `record-fixtures`.
+set dotenv-load
 
 ## Typical flow: just otel-up → use Claude Code → just otel-parse → just otel-costs → just otel-down.
 ## App flow: just install → just docker-build → just docker-run → open http://localhost:8080
@@ -111,7 +114,7 @@ otel-clean:
 
 # --- Tavily Benchmark app -------------------------------------------------
 
-# Record fresh benchmark fixtures (needs TAVILY_API_KEY + `claude /login`)
+# Record fresh benchmark fixtures (needs TAVILY_API_KEY + TINYFISH_API_KEY + `claude /login`)
 [group('app')]
 record-fixtures:
     uv run python3 scripts/record_benchmark_fixtures.py

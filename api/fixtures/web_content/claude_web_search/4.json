@@ -1,0 +1,56 @@
+{
+  "question": "Fetch https://letsencrypt.org/ with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I fetched the page, but I can't give you the verbatim text. The WebFetch tool runs the page through a small model, and it returned a summary instead of the full text. I'm not going to present that summary as the page's exact content.\n\nThis is what the tool returned for https://letsencrypt.org/:\n\n- **Purpose:** Let's Encrypt is a nonprofit Certificate Authority that issues free TLS certificates so websites can use HTTPS. It is a project of the Internet Security Research Group (ISRG).\n- **Scale:** The page says it serves more than 700 million websites.\n- **Getting started:** You have to prove control of a domain to get a certificate. The page links to a getting-started guide, documentation, recommended ACME clients for automation, and a community forum.\n- **Support:** The site asks for donations and sponsorships.\n- **Sibling projects:** Prossimo works on memory safety in Internet infrastructure. Divvi Up provides privacy-respecting metrics collection.\n- **Recent blog posts:** They cover shorter certificate lifetimes (64 days, starting February 2027), a ClickHouse-based data warehouse, and an ISRG Root X1 t-shirt.\n- **Sponsors:** They are listed by tier, from Diamond to Silver.\n- **Footer:** It has ISRG's San Francisco legal address, a Minneapolis mailing address, and links to GitHub, LinkedIn, terms, the privacy policy, and the trademark policy.\n\nFor the exact text, you could run `curl -s https://letsencrypt.org/` in a terminal and strip the HTML. I can run that for you if you'd like.",
+  "latency_ms": 12436.934333003592,
+  "response_bytes": 1507,
+  "session_id": "2abe2621-8742-49c5-98d2-7eecdb084ebc",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0190431,
+  "search_ingest_tokens": 535,
+  "web_search_calls": 1,
+  "tool_result_text": "I can't return the full page verbatim, but here's a summary of the Let's Encrypt homepage:\n\n- **Purpose:** Let's Encrypt is a nonprofit Certificate Authority that issues free TLS certificates, so websites can use HTTPS. It is a project of the Internet Security Research Group (ISRG).\n- **Scale:** The page says it serves more than 700 million websites.\n- **Getting started:** You must prove control of a domain to get a certificate. The page links to a getting-started guide, documentation, a list of recommended ACME clients for automating certificate management, and a community forum.\n- **Support:** The site asks for donations and sponsorships to fund the service.\n- **Sibling projects:** Prossimo focuses on memory safety in Internet infrastructure, and Divvi Up provides privacy-respecting metrics collection.\n- **Recent posts:** The blog covers upcoming shorter certificate lifetimes (64 days, starting February 2027), a data warehouse built on ClickHouse, and an ISRG Root X1 t-shirt.\n- **Sponsors:** Major sponsors are listed by tier, from Diamond down to Silver.\n- **Footer:** It lists ISRG's San Francisco legal address, a Minneapolis mailing address, and links to GitHub, LinkedIn, terms, privacy policy, and trademark policy.",
+  "api_calls": [
+    {
+      "input_total": 3472,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 4031,
+      "output_tokens": 9
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2652,
+    "cache_read_input_tokens": 4847,
+    "output_tokens": 699,
+    "output_tokens_details": {
+      "thinking_tokens": 56
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2652,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 598,
+        "cache_read_input_tokens": 3470,
+        "cache_creation_input_tokens": 559,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 559
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
+}

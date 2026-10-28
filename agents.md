@@ -71,7 +71,8 @@ Highlights:
   `e2e` / `e2e-full` — the Tavily Benchmark app's build/run/test loop; see
   `specs/tavily-benchmark-app.md`.
 - `just record-fixtures` — regenerate the app's checked-in benchmark
-  fixtures (needs `TAVILY_API_KEY` + a `claude /login`'d CLI).
+  fixtures (needs `TAVILY_API_KEY`, `TINYFISH_API_KEY` + the `tinyfish` CLI,
+  and a `claude /login`'d CLI).
 - `just otel-up` / `otel-parse` / `otel-costs` / `otel-report` / `otel-down`
   — the OTel per-prompt cost capture + prompt-journal flow (see below).
   The collector auto-starts via a `SessionStart` hook; `otel-up`/`-down`
@@ -131,7 +132,7 @@ AgentSoul below) to a polyglot TypeScript + Python repo:
   Context7, both reading credentials from environment variables
   (`GITHUB_MCP_TOKEN`, `CONTEXT7_API_KEY`) — never hardcoded.
 - **Secrets/env**: no secrets committed. `.env.template` documents the
-  contract — MCP tokens, plus `TAVILY_API_KEY`/`TAVILY_LIVE` for the
+  contract — MCP tokens, plus `TAVILY_API_KEY`/`TINYFISH_API_KEY`/`TAVILY_LIVE` for the
   benchmark app (needed only for `just record-fixtures`; the served app
   needs no secrets at all). There is deliberately no `ANTHROPIC_API_KEY` —
   this org doesn't issue one; see `specs/tavily-benchmark-app.md` §4.

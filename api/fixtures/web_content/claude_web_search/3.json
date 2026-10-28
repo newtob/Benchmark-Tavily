@@ -1,0 +1,56 @@
+{
+  "question": "Fetch https://www.bbc.co.uk/news/articles/c4g5kl0n5d2o with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I couldn't fetch that page. The WebFetch tool returned \"Claude Code is unable to fetch from www.bbc.co.uk\", so I have no article text to give you, and I won't reconstruct it from memory.\n\nYou could try:\n- Opening the URL in a browser and pasting the text here.\n- Giving me a different source for the same story.\n- Running `curl` yourself, if your permission settings allow it. The page may still be blocked or rendered client-side.",
+  "latency_ms": 6450.935583998216,
+  "response_bytes": 431,
+  "session_id": "2ca5df6f-fc93-41e4-a4bd-4a2de3b13415",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0122691,
+  "search_ingest_tokens": 130,
+  "web_search_calls": 1,
+  "tool_result_text": "",
+  "api_calls": [
+    {
+      "input_total": 3496,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 3650,
+      "output_tokens": 149
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 2271,
+    "cache_read_input_tokens": 4871,
+    "output_tokens": 269,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 2271,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 149,
+        "cache_read_input_tokens": 3494,
+        "cache_creation_input_tokens": 154,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 154
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
+}

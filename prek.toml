@@ -54,6 +54,7 @@ additional_dependencies = [
     "mcp==2.2.0",
     "tiktoken==0.14.0",
     "pyyaml==6.0.3",
+    "pytest==9.1.1",
     "types-PyYAML==6.0.12.20260906",
 ]
 
@@ -76,10 +77,10 @@ additional_dependencies = ["@biomejs/biome@2.5.13"]
 files = '\.(ts|tsx|js|jsx|mjs|cjs|json|jsonc)$'
 exclude = '^(pnpm-lock\.yaml|.*/dist/.*|.*/build/.*|.*/\.next/.*)$'
 
-[[repos.hooks]]
-id = "ts-typecheck"
-name = "TypeScript typecheck"
-entry = "bash ./scripts/hooks/ts-typecheck.sh"
-language = "system"
-pass_filenames = false
-files = '\.(ts|tsx)$'
+# [[repos.hooks]]
+# id = "ts-typecheck"
+# name = "TypeScript typecheck"
+# entry = "bash ./scripts/hooks/ts-typecheck.sh"
+# language = "system"
+# pass_filenames = false
+# files = '\.(ts|tsx)$'

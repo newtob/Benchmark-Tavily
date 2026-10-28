@@ -1,10 +1,56 @@
 {
-  "_placeholder_note": "Hand-authored placeholder, not a real Claude Code CLI response. Run `just record-fixtures` (needs the Claude Code CLI logged in) to replace with real recorded data.",
-  "question": "What parameters does the Tavily Extract API endpoint accept?",
-  "response_text": "The Tavily Extract API accepts a required `urls` parameter (a list of URLs to extract content from), plus optional parameters: `extract_depth` (basic or advanced), `include_images`, `format` (markdown or text), and `include_favicon`. Each result in the response includes the extracted `raw_content` along with per-source metadata.",
-  "latency_ms": 4200.0,
-  "response_bytes": 360,
-  "session_id": "placeholder-session-0",
-  "model": "claude-sonnet-5",
-  "total_cost_usd": 0.0154
+  "question": "Fetch https://en.wikipedia.org/wiki/YouTube with the WebFetch tool and return the full text content of the page, verbatim, with no summary.",
+  "response_text": "I couldn't get the full verbatim text. WebFetch passes the page through a small model, and it returned a short summary instead of the article. It also said it can't reproduce the article verbatim. It only covered the first 100,000 of about 244,000 characters.\n\nThis is what came back, and it's a paraphrase, not the page text:\n\n- YouTube is an American video-sharing platform owned by Google. Chad Hurley, Jawed Karim and Steve Chen founded it in February 2005. It's headquartered in San Bruno, California.\n- Google bought it in November 2006 for $1.65 billion.\n- It reported over 2.7 billion monthly users in January 2024.\n- Its products include YouTube Premium, Music, TV, Kids and Shorts.\n- Susan Wojcicki was CEO from 2014 to 2023, and Neal Mohan succeeded her.\n- It has faced criticism over misinformation, copyright enforcement, privacy and child safety. It paid a $170 million FTC fine in 2019 over children's data.\n\nFor the exact text, you could:\n- Download the raw wikitext from `https://en.wikipedia.org/w/index.php?title=YouTube&action=raw`.\n- Use the Wikipedia REST API, or a Wikipedia dump.\n- Have me fetch specific sections with targeted prompts, though that will still pass through the same summarizing model.\n\nI can try one of the fetch routes if you'd like.",
+  "latency_ms": 18480.983665998792,
+  "response_bytes": 1274,
+  "session_id": "45d829e9-7b1a-4919-a945-3e57012af081",
+  "model": "claude-sonnet-5-5",
+  "total_cost_usd": 0.0291074,
+  "search_ingest_tokens": 604,
+  "web_search_calls": 1,
+  "tool_result_text": "YouTube is an American online video-sharing platform owned by Google. Three former PayPal employees, Chad Hurley, Jawed Karim, and Steve Chen, founded it in February 2005. It is headquartered in San Bruno, California, and is the second-most-visited website in the world after Google. Google acquired it in November 2006 for $1.65 billion.\n\n- **Growth:** The platform reported over 2.7 billion monthly users in January 2024. Its business has expanded from advertising to subscriptions such as YouTube Premium, along with YouTube Music, YouTube TV, YouTube Kids, and YouTube Shorts.\n- **Leadership:** Susan Wojcicki was CEO from 2014 to 2023. Neal Mohan succeeded her in February 2023.\n- **Criticism:** The site has faced scrutiny over misinformation, copyright enforcement (including the Content ID system), user privacy, child safety, and inconsistent application of its guidelines. A 2019 FTC fine of $170 million related to children's data under COPPA.\n- **Other notable points:** YouTube removed public dislike counts in 2021, cracked down on ad blockers in 2023, and has faced restrictions and fines in Russia since 2021.\n\nI can't reproduce the full article verbatim, but I can answer specific questions about any section.\n\n[WebFetch note: this page's text is 244462 characters long and the answer above covers only characters 0 to 100000; the final 144462 were not read \u2014 to read on, call WebFetch again with the same url and offset: 100000.]",
+  "api_calls": [
+    {
+      "input_total": 3484,
+      "output_tokens": 24
+    },
+    {
+      "input_total": 4112,
+      "output_tokens": 8
+    }
+  ],
+  "usage": {
+    "input_tokens": 4,
+    "cache_creation_input_tokens": 4110,
+    "cache_read_input_tokens": 3482,
+    "output_tokens": 709,
+    "output_tokens_details": {
+      "thinking_tokens": 127
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 4110,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 599,
+        "cache_read_input_tokens": 3482,
+        "cache_creation_input_tokens": 628,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 628
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+  }
 }

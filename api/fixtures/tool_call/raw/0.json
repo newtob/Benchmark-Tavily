@@ -1,7 +1,0 @@
-{
-  "_placeholder_note": "Hand-authored placeholder, not a real Tavily response. Run `just record-fixtures` (needs TAVILY_API_KEY) to replace with real recorded data.",
-  "query": "return the latest release for the package `uv`",
-  "response_text": "{\"query\": \"return the latest release for the package `uv`\", \"answer\": null, \"results\": [{\"title\": \"Releases · astral-sh/uv\", \"url\": \"https://github.com/astral-sh/uv/releases\", \"content\": \"The latest release of uv is 0.9.7, published recently. uv is an extremely fast Python package and project manager, written in Rust.\", \"score\": 0.93}, {\"title\": \"uv - PyPI\", \"url\": \"https://pypi.org/project/uv/\", \"content\": \"uv: An extremely fast Python package and project manager, written in Rust. Current version 0.9.7.\", \"score\": 0.87}], \"images\": [], \"response_time\": 1.12}",
-  "latency_ms": 850.0,
-  "response_bytes": 512
-}
